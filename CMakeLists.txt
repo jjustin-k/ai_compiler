@@ -7,6 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 add_executable(dlc
     src/main.cpp
+    src/ir/tensor.cpp
 )
 
 

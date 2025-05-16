@@ -1,29 +1,98 @@
 #include<iostream>
-#include"./include/ops/element.h"
-#include "element.h"
+#include "element.hpp"
 
-bool ElementWiseOps::sameShape(tensor &t1, tensor &t2)
+bool ElementWiseOps::validOperation(Tensor &t1, Tensor &t2)
 {
-    return false;
+    std::vector<int> shape1 = t1.getShape();
+    std::vector<int> shape2 = t2.getShape();
+
+    for (size_t i = 0; i < shape1.size(); ++i) {
+        if(shape1[i] != shape2[i]){
+            return false;
+        }
+    }
+
+    return true;
 }
 
-tensor ElementWiseOps::add(tensor &t1, tensor &t2)
+
+Tensor ElementWiseOps::add(Tensor &t1, Tensor &t2)
 {
 
-    return tensor();
+    if(!validOperation(t1, t2)){
+        throw std::runtime_error("Tensors have different shapes");
+    }
+
+    float* data1 = t1.getDataA();
+    float* data2 = t2.getDataA();
+
+    std::vector<float> new_data(t1.size);
+
+    // Add threads later
+    for(size_t i = 0; i < t1.size; i++){
+        new_data[i] = data1[i] + data2[i];
+    }
+    
+    return Tensor(new_data, t1.getShape());
 }
 
-tensor ElementWiseOps::subtract(tensor &t1, tensor &t2)
+
+Tensor ElementWiseOps::subtract(Tensor &t1, Tensor &t2)
 {
-    return tensor();
+    if(!validOperation(t1, t2)){
+        throw std::runtime_error("Tensors have different shapes");
+    }
+
+    float* data1 = t1.getDataA();
+    float* data2 = t2.getDataA();
+
+    std::vector<float> new_data(t1.size);
+
+    // Add threads later
+    for(size_t i = 0; i < t1.size; i++){
+        new_data[i] = data1[i] - data2[i];
+    }
+    
+    return Tensor(new_data, t1.getShape());
 }
 
-tensor ElementWiseOps::divide(tensor &t1, tensor &t2)
+
+Tensor ElementWiseOps::divide(Tensor &t1, Tensor &t2)
 {
-    return tensor();
+    if(!validOperation(t1, t2)){
+        throw std::runtime_error("Tensors have different shapes");
+    }
+
+    float* data1 = t1.getDataA();
+    float* data2 = t2.getDataA();
+
+    std::vector<float> new_data(t1.size);
+
+    // Add threads later
+    for(size_t i = 0; i < t1.size; i++){
+        const float epsilon = 1e-7f;
+        new_data[i] = data1[i] / (data2[i] + epsilon); //saving division by 0
+    }
+    
+    return Tensor(new_data, t1.getShape());
 }
 
-tensor ElementWiseOps::mutiply(tensor &t1, tensor &t2)
+
+Tensor ElementWiseOps::mutiply(Tensor &t1, Tensor &t2)
 {
-    return tensor();
+    if(!validOperation(t1, t2)){
+        throw std::runtime_error("Tensors have different shapes");
+    }
+
+    float* data1 = t1.getDataA();
+    float* data2 = t2.getDataA();
+
+    std::vector<float> new_data(t1.size);
+
+    // Add threads later
+    for(size_t i = 0; i < t1.size; i++){
+        new_data[i] = data1[i] * data2[i];
+    }
+    
+    return Tensor(new_data, t1.getShape());
 }

@@ -129,6 +129,30 @@ dlc/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/build
 .PHONY : dlc/fast
 
+src/ir/tensor.o: src/ir/tensor.cpp.o
+.PHONY : src/ir/tensor.o
+
+# target to build an object file
+src/ir/tensor.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/ir/tensor.cpp.o
+.PHONY : src/ir/tensor.cpp.o
+
+src/ir/tensor.i: src/ir/tensor.cpp.i
+.PHONY : src/ir/tensor.i
+
+# target to preprocess a source file
+src/ir/tensor.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/ir/tensor.cpp.i
+.PHONY : src/ir/tensor.cpp.i
+
+src/ir/tensor.s: src/ir/tensor.cpp.s
+.PHONY : src/ir/tensor.s
+
+# target to generate assembly for a file
+src/ir/tensor.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/ir/tensor.cpp.s
+.PHONY : src/ir/tensor.cpp.s
+
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
 
@@ -162,6 +186,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... dlc"
+	@echo "... src/ir/tensor.o"
+	@echo "... src/ir/tensor.i"
+	@echo "... src/ir/tensor.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
