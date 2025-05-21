@@ -1,15 +1,21 @@
 #pragma once
 #include<vector>
+#include "tensor.hpp"
 
-enum Activation{
+enum Operation{
     RELU,
-    SIGMOID
+    SIGMOID,
+    ADD,
+    SUB,
+    MULT,
+    MATMULT,
+    DIV
 };
 
 struct Node{
     float value;
     float bias;
-    Activation activation;
+    Operation op;
     std::vector<Edge*> output;
     std::vector<Edge*> input;
 };

@@ -1,5 +1,9 @@
 #include "ir/tensor.hpp"
 #include<iostream>
+#include "tensor.hpp"
+
+
+Tensor::Tensor(){}
 
 Tensor::Tensor(std::vector<float> data, std::vector<int> shape)
 {
@@ -13,6 +17,21 @@ Tensor::Tensor(std::vector<float> data, std::vector<int> shape)
     strides[3] = 1;
 }
 
+void Tensor::setShape(std::vector<int> shape)
+{
+    this->shape = shape;
+    if(!this->data.empty() && !this->shape.empty()){
+        valid_tensor = true;
+    }
+}
+
+void Tensor::setData(std::vector<float> data)
+{
+    this->data = data;
+    if(!this->data.empty() && !this->shape.empty()){
+        valid_tensor = true;
+    }
+}
 
 std::vector<int> Tensor::getShape()
 {
