@@ -6,7 +6,7 @@ class Tensor
     private:
         bool valid_tensor;
         std::vector<float> data;
-        std::vector<int> shape;
+        std::vector<int> shape; //size of shape is how many dimensions
         std::vector<int> strides;
     public:
         size_t size;

@@ -1,8 +1,8 @@
-#include"sub.hpp"
+#include"../include/ops/sub.hpp"
 
-void Subtract::subtract(Tensor &aTensor1, Tensor &aTensor2, Tensor &result_location)
+void Subtract::operate(Tensor &aTensor1, Tensor &aTensor2, Tensor &result_location)
 {
-    if(!validOperation(aTensor1, aTensor2)){
+    if(!Operation::validOperation(aTensor1, aTensor2)){
         throw std::runtime_error("Tensors have different shapes");
     }
 

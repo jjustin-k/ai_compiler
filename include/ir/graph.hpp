@@ -1,34 +1,26 @@
 #pragma once
 #include<vector>
 #include "tensor.hpp"
+#include "./ops/operation.hpp"
 
-enum Operation{
-    RELU,
-    SIGMOID,
-    ADD,
-    SUB,
-    MULT,
-    MATMULT,
-    DIV
+enum Type{
+    CONSTANT,
+    OPERATION
 };
 
 struct Node{
-    float value;
-    float bias;
-    Operation op;
-    std::vector<Edge*> output;
-    std::vector<Edge*> input;
+    Type node_type;
+    std::string name;
+    Operation* op;
+    std::vector<Node*> output;
+    std::vector<Node*> input;
 };
 
-struct Edge{
-    float weight;
-    Node* start_node;
-    Node* end_node;
+class Graph{
+    private:
+        std::vector<Node*> nodes;
+    public:
+        void addNode(Node* node);
+        void printGraph();
 };
 
-struct Graph{
-    std::vector<Node> nodes;
-    std::vector<Edge> edges;
-};
-
-void printGraph(Graph &graph);

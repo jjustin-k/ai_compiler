@@ -1,6 +1,6 @@
-#include "ir/tensor.hpp"
+
 #include<iostream>
-#include "tensor.hpp"
+#include "../include/ir/tensor.hpp"
 
 
 Tensor::Tensor(){}

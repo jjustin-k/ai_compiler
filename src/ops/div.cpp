@@ -1,4 +1,4 @@
-#include"div.hpp"
+#include"../include/ops/div.hpp"
 
 void Divide::operate(Tensor &aTensor1, Tensor &aTensor2,Tensor &result_location)
 {

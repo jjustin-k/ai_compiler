@@ -8,6 +8,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 add_executable(dlc
     src/main.cpp
     src/ir/tensor.cpp
+    src/ir/graph.cpp
+    src/ir/graph_builder.cpp
+    src/ops/add.cpp
+    src/ops/div.cpp
+    src/ops/mult.cpp
+    src/ops/operation.cpp
+    src/ops/sub.cpp
 )
 
 

@@ -129,6 +129,54 @@ dlc/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/build
 .PHONY : dlc/fast
 
+src/ir/graph.o: src/ir/graph.cpp.o
+.PHONY : src/ir/graph.o
+
+# target to build an object file
+src/ir/graph.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/ir/graph.cpp.o
+.PHONY : src/ir/graph.cpp.o
+
+src/ir/graph.i: src/ir/graph.cpp.i
+.PHONY : src/ir/graph.i
+
+# target to preprocess a source file
+src/ir/graph.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/ir/graph.cpp.i
+.PHONY : src/ir/graph.cpp.i
+
+src/ir/graph.s: src/ir/graph.cpp.s
+.PHONY : src/ir/graph.s
+
+# target to generate assembly for a file
+src/ir/graph.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/ir/graph.cpp.s
+.PHONY : src/ir/graph.cpp.s
+
+src/ir/graph_builder.o: src/ir/graph_builder.cpp.o
+.PHONY : src/ir/graph_builder.o
+
+# target to build an object file
+src/ir/graph_builder.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/ir/graph_builder.cpp.o
+.PHONY : src/ir/graph_builder.cpp.o
+
+src/ir/graph_builder.i: src/ir/graph_builder.cpp.i
+.PHONY : src/ir/graph_builder.i
+
+# target to preprocess a source file
+src/ir/graph_builder.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/ir/graph_builder.cpp.i
+.PHONY : src/ir/graph_builder.cpp.i
+
+src/ir/graph_builder.s: src/ir/graph_builder.cpp.s
+.PHONY : src/ir/graph_builder.s
+
+# target to generate assembly for a file
+src/ir/graph_builder.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/ir/graph_builder.cpp.s
+.PHONY : src/ir/graph_builder.cpp.s
+
 src/ir/tensor.o: src/ir/tensor.cpp.o
 .PHONY : src/ir/tensor.o
 
@@ -177,6 +225,126 @@ src/main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
 
+src/ops/add.o: src/ops/add.cpp.o
+.PHONY : src/ops/add.o
+
+# target to build an object file
+src/ops/add.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/ops/add.cpp.o
+.PHONY : src/ops/add.cpp.o
+
+src/ops/add.i: src/ops/add.cpp.i
+.PHONY : src/ops/add.i
+
+# target to preprocess a source file
+src/ops/add.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/ops/add.cpp.i
+.PHONY : src/ops/add.cpp.i
+
+src/ops/add.s: src/ops/add.cpp.s
+.PHONY : src/ops/add.s
+
+# target to generate assembly for a file
+src/ops/add.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/ops/add.cpp.s
+.PHONY : src/ops/add.cpp.s
+
+src/ops/div.o: src/ops/div.cpp.o
+.PHONY : src/ops/div.o
+
+# target to build an object file
+src/ops/div.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/ops/div.cpp.o
+.PHONY : src/ops/div.cpp.o
+
+src/ops/div.i: src/ops/div.cpp.i
+.PHONY : src/ops/div.i
+
+# target to preprocess a source file
+src/ops/div.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/ops/div.cpp.i
+.PHONY : src/ops/div.cpp.i
+
+src/ops/div.s: src/ops/div.cpp.s
+.PHONY : src/ops/div.s
+
+# target to generate assembly for a file
+src/ops/div.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/ops/div.cpp.s
+.PHONY : src/ops/div.cpp.s
+
+src/ops/mult.o: src/ops/mult.cpp.o
+.PHONY : src/ops/mult.o
+
+# target to build an object file
+src/ops/mult.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/ops/mult.cpp.o
+.PHONY : src/ops/mult.cpp.o
+
+src/ops/mult.i: src/ops/mult.cpp.i
+.PHONY : src/ops/mult.i
+
+# target to preprocess a source file
+src/ops/mult.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/ops/mult.cpp.i
+.PHONY : src/ops/mult.cpp.i
+
+src/ops/mult.s: src/ops/mult.cpp.s
+.PHONY : src/ops/mult.s
+
+# target to generate assembly for a file
+src/ops/mult.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/ops/mult.cpp.s
+.PHONY : src/ops/mult.cpp.s
+
+src/ops/operation.o: src/ops/operation.cpp.o
+.PHONY : src/ops/operation.o
+
+# target to build an object file
+src/ops/operation.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/ops/operation.cpp.o
+.PHONY : src/ops/operation.cpp.o
+
+src/ops/operation.i: src/ops/operation.cpp.i
+.PHONY : src/ops/operation.i
+
+# target to preprocess a source file
+src/ops/operation.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/ops/operation.cpp.i
+.PHONY : src/ops/operation.cpp.i
+
+src/ops/operation.s: src/ops/operation.cpp.s
+.PHONY : src/ops/operation.s
+
+# target to generate assembly for a file
+src/ops/operation.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/ops/operation.cpp.s
+.PHONY : src/ops/operation.cpp.s
+
+src/ops/sub.o: src/ops/sub.cpp.o
+.PHONY : src/ops/sub.o
+
+# target to build an object file
+src/ops/sub.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/ops/sub.cpp.o
+.PHONY : src/ops/sub.cpp.o
+
+src/ops/sub.i: src/ops/sub.cpp.i
+.PHONY : src/ops/sub.i
+
+# target to preprocess a source file
+src/ops/sub.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/ops/sub.cpp.i
+.PHONY : src/ops/sub.cpp.i
+
+src/ops/sub.s: src/ops/sub.cpp.s
+.PHONY : src/ops/sub.s
+
+# target to generate assembly for a file
+src/ops/sub.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/ops/sub.cpp.s
+.PHONY : src/ops/sub.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -186,12 +354,33 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... dlc"
+	@echo "... src/ir/graph.o"
+	@echo "... src/ir/graph.i"
+	@echo "... src/ir/graph.s"
+	@echo "... src/ir/graph_builder.o"
+	@echo "... src/ir/graph_builder.i"
+	@echo "... src/ir/graph_builder.s"
 	@echo "... src/ir/tensor.o"
 	@echo "... src/ir/tensor.i"
 	@echo "... src/ir/tensor.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
+	@echo "... src/ops/add.o"
+	@echo "... src/ops/add.i"
+	@echo "... src/ops/add.s"
+	@echo "... src/ops/div.o"
+	@echo "... src/ops/div.i"
+	@echo "... src/ops/div.s"
+	@echo "... src/ops/mult.o"
+	@echo "... src/ops/mult.i"
+	@echo "... src/ops/mult.s"
+	@echo "... src/ops/operation.o"
+	@echo "... src/ops/operation.i"
+	@echo "... src/ops/operation.s"
+	@echo "... src/ops/sub.o"
+	@echo "... src/ops/sub.i"
+	@echo "... src/ops/sub.s"
 .PHONY : help
 
 

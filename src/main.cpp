@@ -1,40 +1,39 @@
 #include<iostream>
 
-#include"ir/tensor.hpp"
+#include"ir/graph_builder.hpp"
 
 int main(){
     std::cout << "Hello World" << std::endl;
+    Graph graph;
 
-    std::vector<int> shape = {2, 3, 2, 2}; // 2 batches, 3 channels, 2x2 spatial size
-    std::vector<float> data = {
-        // Batch 0
-        // Channel 0
-        1, 2,
-        3, 4,
-        // Channel 1
-        5, 6,
-        7, 8,
-        // Channel 2
-        9, 10,
-        11, 12,
+    Node n, n1, n2, n3, n4;
 
-        // Batch 1
-        // Channel 0
-        13, 14,
-        15, 16,
-        // Channel 1
-        17, 18,
-        19, 20,
-        // Channel 2
-        21, 22,
-        23, 24
-    };
+    n.name = "Input";
+    n1.name = "Conv";
+    n2.name = "Weight";
+    n3.name = "MatMul";
+    n4.name = "Conv";
 
+    std::vector<Node*> input_layer;
+    std::vector<Node*> m1;
+    std::vector<Node*> m2;
+    std::vector<Node*> output_layer;
 
-    Tensor tensor(data, shape);
+    input_layer.push_back(&n);
+    m1.push_back(&n1);
+    m1.push_back(&n2);
+    m2.push_back(&n3);
+    output_layer.push_back(&n4);
 
-    tensor.print();
-
+    GraphBuilder graph_builder;
+    //Have to manually add first node
+    graph.addNode(&n);
+    graph_builder.addNode(graph, input_layer, &n1);
+    //adding constant manually
+    graph.addNode(&n2);
+    graph_builder.addNode(graph, m1, &n3);
+    graph_builder.addNode(graph, m2, &n4);
+    graph.printGraph();
 
     return 0;
 }
