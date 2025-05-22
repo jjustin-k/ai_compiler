@@ -12,44 +12,33 @@ void buildTestGraph(Graph &graph){
 
     Node* n = new Node;
     Node* n1 = new Node;
-    Node* n2 = new Node;
+
     Node* n3 = new Node;
-    Node* n4 = new Node;
 
     n->name = "Input";
-    n1->name = "Add";
-    n2->name = "Input";
-    n3->name = "Subtract";
-    n4->name = "Multiply";
-
-    Operation* add = new Add();
-    Operation* sub = new Subtract();
-    Operation* mult = new Multiply();
-
-    n1->op = add;
-    n3->op = sub;
-    n4->op = mult;
-    
+    n1->name = "Input";
+    n3->name = "Input";
 
     std::vector<Node*> input_layer;
     std::vector<Node*> m1;
     std::vector<Node*> m2;
-    std::vector<Node*> output_layer;
 
     input_layer.push_back(n);
-    m1.push_back(n1);
-    m1.push_back(n2);
-    m2.push_back(n3);
-    output_layer.push_back(n4);
+    input_layer.push_back(n1);
+    
 
     GraphBuilder graph_builder;
     //Have to manually add first node
     graph.addNode(n);
-    graph_builder.addNode(graph, input_layer, n1);
+    graph.addNode(n1);
+    Node* n2 = graph_builder.addNode(graph, "Add", new Add(), input_layer);
+    m1.push_back(n2);
+    graph.addNode(n3);
+    m1.push_back(n3);
     //adding constant manually
-    graph.addNode(n2);
-    graph_builder.addNode(graph, m1, n3);
-    graph_builder.addNode(graph, m2, n4);
+   
+    graph_builder.addNode(graph, "Sub", new Subtract(), m1);
+    
     graph.printGraph();
 
 }
@@ -57,10 +46,33 @@ void buildTestGraph(Graph &graph){
 
 void infer(Graph& graph){
     std::cout << "Infering" << std::endl;
-    Tensor tensor1({1.2f, 2.3f}, {2});
-    Tensor tensor2({4.5f, 5.5f}, {2});
-    std::vector<Tensor> inputs = {tensor1, tensor2};
-    std::cout<< "Tensor size : " << tensor1.size << std::endl;
+    Tensor A({
+        1, 2,
+        3, 4,
+    
+        5, 6,
+        7, 8
+    }, {2, 1, 2, 2});
+
+    Tensor B({
+        10, 20,
+        30, 40,
+    
+        50, 60,
+        70, 80
+    }, {2, 1, 2, 2});
+
+    Tensor C({
+        -1, -2,
+        -3, -4,
+    
+        -5, -6,
+        -7, -8
+    }, {2, 1, 2, 2});
+    
+    
+    std::vector<Tensor> inputs = {A, B, C};
+    std::cout<< "Tensor size : " << A.size << std::endl;
     inference(graph, inputs);
 
 }

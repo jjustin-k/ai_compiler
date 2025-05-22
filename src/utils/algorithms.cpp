@@ -71,11 +71,12 @@ void inference(Graph &graph, std::vector<Tensor> &inputs)
                 node->op->operate(input1, input2, result);
 
                 std::cout << "input 1 : \n";
-                input1.print();
+                input1.print(0,0, "");
                 std::cout << "\ninput 2 : " << std::endl;
-                input2.print();
+                input2.print(0,0, "");
                 std::cout << "\napplying : " << node->name << "\nresult : " << std::endl;
-                result.print();
+
+                result.print(0,0, "");
                 std::cout << "\n---------------\n---------------\n" << std::endl;
             
             }
@@ -83,6 +84,7 @@ void inference(Graph &graph, std::vector<Tensor> &inputs)
             map[node] = result;
         }
     }
+    map[nodes[nodes.size()-1]].print(0,0,"");
 }
 
 

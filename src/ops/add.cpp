@@ -18,5 +18,6 @@ void Add::operate(Tensor &aTensor1, Tensor &aTensor2, Tensor &result_location)
     
     result_location.setData(new_data);
     result_location.setShape(aTensor1.getShape());
+  
 }
 

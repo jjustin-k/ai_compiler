@@ -1,64 +1,95 @@
-#include <cassert>
-#include"ir/tensor.hpp"
+#include<iostream>
 
+#include"ir/graph_builder.hpp"
+#include"utils/algorithms.hpp"
+#include"ops/operation.hpp"
+#include"ops/add.hpp"
+#include"ops/sub.hpp"
+#include"ops/mult.hpp"
 
-void testAddition(Tensor &t1, Tensor &t2){
-    //expected data
+void buildTestGraph(Graph &graph){
+    std::cout << "Hello World" << std::endl;
+
+    Node* n = new Node;
+    Node* n1 = new Node;
+
+    Node* n3 = new Node;
+
+    n->name = "Input";
+    n1->name = "Input";
+    n3->name = "Input";
+
+    std::vector<Node*> input_layer;
+    std::vector<Node*> m1;
+    std::vector<Node*> m2;
+
+    input_layer.push_back(n);
+    input_layer.push_back(n1);
+    
+
+    GraphBuilder graph_builder;
+    //Have to manually add first node
+    graph.addNode(n);
+    graph.addNode(n1);
+    Node* n2 = graph_builder.addNode(graph, "Add", new Add(), input_layer);
+    m1.push_back(n2);
+    graph.addNode(n3);
+    m1.push_back(n3);
+    //adding constant manually
+   
+    graph_builder.addNode(graph, "Sub", new Subtract(), m1);
+    
+    graph.printGraph();
 
 }
 
-int main(){
 
-    std::vector<int> shape1 = {2, 2, 2, 2};
-    std::vector<float> data1 = {
-        // Batch 0
-        // Channel 0
+void infer(Graph& graph){
+    std::cout << "Infering" << std::endl;
+    Tensor A({
         1, 2,
         3, 4,
-        // Channel 1
+    
         5, 6,
-        7, 8,
-        // Batch 1
-        // Channel 0
-        9, 10,
-        11, 12,
-        // Channel 1
-        13, 14,
-        15, 16
-    };
+        7, 8
+    }, {2, 1, 2, 2});
 
-    std::vector<float> data2 = {
-        // Batch 0
-        // Channel 0
-        100, 200,
-        300, 400,
-        // Channel 1
-        500, 600,
-        700, 800,
+    Tensor B({
+        10, 20,
+        30, 40,
     
-        // Batch 1
-        // Channel 0
-        900, 1000,
-        1100, 1200,
-        // Channel 1
-        1300, 1400,
-        1500, 1600
-    };
+        50, 60,
+        70, 80
+    }, {2, 1, 2, 2});
 
-    std::vector<int> shape3 = {1, 2, 2, 2};
-    std::vector<float> data3 = {
-        // Batch 0
-        // Channel 0
-        7, 8,
-        9, 10,
-        // Channel 1
-        11, 12,
-        13, 14
-    };
-
-    Tensor t1(data1, shape1);
-    Tensor t2(data2, shape1);
-    Tensor t3(data3, shape3);
+    Tensor C({
+        -1, -2,
+        -3, -4,
     
-    return 1;
+        -5, -6,
+        -7, -8
+    }, {2, 1, 2, 2});
+    
+    
+    std::vector<Tensor> inputs = {A, B, C};
+    std::cout<< "Tensor size : " << A.size << std::endl;
+    inference(graph, inputs);
+
+}
+
+void deleteGraph(Graph& graph){
+    for(auto& node : graph.getNodes()){
+        delete node->op;
+        delete node;
+    }
+}
+
+
+int main(){
+    Graph graph;
+    buildTestGraph(graph);
+    infer(graph);
+
+    deleteGraph(graph);
+    return 0;
 }

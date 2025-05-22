@@ -3,13 +3,7 @@
 #include "tensor.hpp"
 #include "./ops/operation.hpp"
 
-enum Type{
-    CONSTANT,
-    OPERATION
-};
-
 struct Node{
-    Type node_type;
     std::string name;
     Operation* op;
     std::vector<Node*> output;
@@ -27,5 +21,6 @@ class Graph{
         std::vector<size_t> getInputNodes();
         size_t getNumOfNodes();
         size_t getNumOfInputNodes();
+  
 };
 

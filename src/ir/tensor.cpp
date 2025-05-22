@@ -10,11 +10,14 @@ Tensor::Tensor(std::vector<float> data, std::vector<int> shape)
     this->data = data;
     this->shape = shape;
     size = data.size();
+    /*
     strides = std::vector<int>(data.size()); //assuming 4d for now
     strides[0] = this->shape[1] * this->shape[2] * this->shape[3];
     strides[1] = this->shape[2] * this->shape[3];
     strides[2] = this->shape[3];
     strides[3] = 1;
+    */
+    
 }
 
 void Tensor::setShape(std::vector<int> shape)
@@ -36,7 +39,7 @@ void Tensor::setData(std::vector<float> data)
 
 std::vector<int> Tensor::getShape()
 {
-    return std::vector<int>();
+    return this->shape;
 }
 
 
@@ -57,28 +60,35 @@ void Tensor::reshape(std::vector<int> &new_shape)
 
 }
 
-void Tensor::print()
-{
-    /*
-    only for 4d
-    
-    for(size_t batch = 0; batch < shape[0]; batch++){
-        std::cout << "Batch : " << batch << std::endl;
-        for(size_t channel = 0; channel < shape[1]; channel ++){
-            std::cout << "Channel : " << channel << std::endl;
-            for(size_t row = 0; row < shape[2]; row ++){
-                for(size_t col = 0; col < shape[3]; col++){
-                    std::cout << data[batch*strides[0] + channel*strides[1] + row*strides[2] + col] << " ";
-                }
-                std::cout << "\n";
-            }
-            std::cout << "\n";
-        }
-        std::cout << "--------------------------\n--------------------------\n";
-    }*/
-    
-    //assuming 1d for testing 
-    for(size_t i = 0; i < size; i++){
-        std::cout << data[i] << " " << std::endl;
+void Tensor::print(int dim, int offset, std::string indent) {
+    int dimSize = shape[dim];
+    int stride = 1;
+    for (int i = dim + 1; i < shape.size(); ++i) {
+        stride *= shape[i];
     }
+
+    std::cout << indent << "[";
+    for (int i = 0; i < dimSize; ++i) {
+        int index = offset + i * stride;
+
+        if (dim == shape.size() - 1) {
+            // Leaf value
+            std::cout << data[index];
+        } else {
+            // Nested dimension
+            std::cout << "\n";
+            print(dim + 1, index, indent + "  ");
+        }
+
+        if (i != dimSize - 1)
+            std::cout << ", ";
+    }
+
+    if (dim != shape.size() - 1)
+        std::cout << "\n" << indent;
+
+    std::cout << "]";
+    if (dim == 0)
+        std::cout << "\n";
+
 }

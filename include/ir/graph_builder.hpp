@@ -2,6 +2,10 @@
 #include "graph.hpp"
 
 class GraphBuilder{
+    private:
+        void deleteNode(Node* node);
     public:
-        void addNode(Graph& graph, std::vector<Node*>& inputs, Node* new_node);
+        void deleteGraph(Graph& graph);
+        Node* addNode(Graph& graph, std::string name, Operation* operation, std::vector<Node *>& inputs);
+        //find way to 
 };
