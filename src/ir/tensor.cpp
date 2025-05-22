@@ -2,7 +2,6 @@
 #include<iostream>
 #include "../include/ir/tensor.hpp"
 
-
 Tensor::Tensor(){}
 
 Tensor::Tensor(std::vector<float> data, std::vector<int> shape)
@@ -10,23 +9,37 @@ Tensor::Tensor(std::vector<float> data, std::vector<int> shape)
     this->data = data;
     this->shape = shape;
     size = data.size();
-    /*
-    strides = std::vector<int>(data.size()); //assuming 4d for now
-    strides[0] = this->shape[1] * this->shape[2] * this->shape[3];
-    strides[1] = this->shape[2] * this->shape[3];
-    strides[2] = this->shape[3];
-    strides[3] = 1;
-    */
     
+    calcAndSetStrides();
 }
+
+
+void Tensor::calcAndSetStrides()
+{
+    strides = std::vector<int>(shape.size()); 
+
+    for(size_t i = 0; i < shape.size(); i++){
+        for(size_t j = i ; j < shape.size(); j++){
+            if(j != i ){
+                strides[i] *= this->shape[j];
+            }
+            else{
+                strides[i] = 1;
+            }
+        }
+    }   
+}
+
 
 void Tensor::setShape(std::vector<int> shape)
 {
     this->shape = shape;
     if(!this->data.empty() && !this->shape.empty()){
         valid_tensor = true;
+        calcAndSetStrides();
     }
 }
+
 
 void Tensor::setData(std::vector<float> data)
 {
@@ -34,6 +47,7 @@ void Tensor::setData(std::vector<float> data)
     size = data.size();
     if(!this->data.empty() && !this->shape.empty()){
         valid_tensor = true;
+        calcAndSetStrides();
     }
 }
 

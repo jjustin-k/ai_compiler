@@ -273,6 +273,30 @@ src/ops/div.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/ops/div.cpp.s
 .PHONY : src/ops/div.cpp.s
 
+src/ops/mat_mul.o: src/ops/mat_mul.cpp.o
+.PHONY : src/ops/mat_mul.o
+
+# target to build an object file
+src/ops/mat_mul.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/ops/mat_mul.cpp.o
+.PHONY : src/ops/mat_mul.cpp.o
+
+src/ops/mat_mul.i: src/ops/mat_mul.cpp.i
+.PHONY : src/ops/mat_mul.i
+
+# target to preprocess a source file
+src/ops/mat_mul.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/ops/mat_mul.cpp.i
+.PHONY : src/ops/mat_mul.cpp.i
+
+src/ops/mat_mul.s: src/ops/mat_mul.cpp.s
+.PHONY : src/ops/mat_mul.s
+
+# target to generate assembly for a file
+src/ops/mat_mul.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/ops/mat_mul.cpp.s
+.PHONY : src/ops/mat_mul.cpp.s
+
 src/ops/mult.o: src/ops/mult.cpp.o
 .PHONY : src/ops/mult.o
 
@@ -396,6 +420,9 @@ help:
 	@echo "... src/ops/div.o"
 	@echo "... src/ops/div.i"
 	@echo "... src/ops/div.s"
+	@echo "... src/ops/mat_mul.o"
+	@echo "... src/ops/mat_mul.i"
+	@echo "... src/ops/mat_mul.s"
 	@echo "... src/ops/mult.o"
 	@echo "... src/ops/mult.i"
 	@echo "... src/ops/mult.s"

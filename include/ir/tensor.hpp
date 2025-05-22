@@ -7,8 +7,9 @@ class Tensor
         bool valid_tensor;
         std::vector<float> data;
         std::vector<int> shape; //size of shape is how many dimensions
-        std::vector<int> strides;
+        void calcAndSetStrides();
     public:
+        std::vector<int> strides;
         size_t size;
         Tensor();
         Tensor(std::vector<float> data, std::vector<int> shape);

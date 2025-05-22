@@ -13,6 +13,7 @@ add_executable(dlc
     src/ops/add.cpp
     src/ops/div.cpp
     src/ops/mult.cpp
+    src/ops/mat_mul.cpp
     src/ops/operation.cpp
     src/ops/sub.cpp
     src/utils/algorithms.cpp

@@ -170,10 +170,24 @@ CMakeFiles/dlc.dir/src/ops/mult.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/dlc.dir/src/ops/mult.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/justinkwinecki/Documents/Programming/Term_25-26/comp/ai_compiler/src/ops/mult.cpp -o CMakeFiles/dlc.dir/src/ops/mult.cpp.s
 
+CMakeFiles/dlc.dir/src/ops/mat_mul.cpp.o: CMakeFiles/dlc.dir/flags.make
+CMakeFiles/dlc.dir/src/ops/mat_mul.cpp.o: /Users/justinkwinecki/Documents/Programming/Term_25-26/comp/ai_compiler/src/ops/mat_mul.cpp
+CMakeFiles/dlc.dir/src/ops/mat_mul.cpp.o: CMakeFiles/dlc.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/justinkwinecki/Documents/Programming/Term_25-26/comp/ai_compiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/dlc.dir/src/ops/mat_mul.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/dlc.dir/src/ops/mat_mul.cpp.o -MF CMakeFiles/dlc.dir/src/ops/mat_mul.cpp.o.d -o CMakeFiles/dlc.dir/src/ops/mat_mul.cpp.o -c /Users/justinkwinecki/Documents/Programming/Term_25-26/comp/ai_compiler/src/ops/mat_mul.cpp
+
+CMakeFiles/dlc.dir/src/ops/mat_mul.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/dlc.dir/src/ops/mat_mul.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/justinkwinecki/Documents/Programming/Term_25-26/comp/ai_compiler/src/ops/mat_mul.cpp > CMakeFiles/dlc.dir/src/ops/mat_mul.cpp.i
+
+CMakeFiles/dlc.dir/src/ops/mat_mul.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/dlc.dir/src/ops/mat_mul.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/justinkwinecki/Documents/Programming/Term_25-26/comp/ai_compiler/src/ops/mat_mul.cpp -o CMakeFiles/dlc.dir/src/ops/mat_mul.cpp.s
+
 CMakeFiles/dlc.dir/src/ops/operation.cpp.o: CMakeFiles/dlc.dir/flags.make
 CMakeFiles/dlc.dir/src/ops/operation.cpp.o: /Users/justinkwinecki/Documents/Programming/Term_25-26/comp/ai_compiler/src/ops/operation.cpp
 CMakeFiles/dlc.dir/src/ops/operation.cpp.o: CMakeFiles/dlc.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/justinkwinecki/Documents/Programming/Term_25-26/comp/ai_compiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/dlc.dir/src/ops/operation.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/justinkwinecki/Documents/Programming/Term_25-26/comp/ai_compiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/dlc.dir/src/ops/operation.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/dlc.dir/src/ops/operation.cpp.o -MF CMakeFiles/dlc.dir/src/ops/operation.cpp.o.d -o CMakeFiles/dlc.dir/src/ops/operation.cpp.o -c /Users/justinkwinecki/Documents/Programming/Term_25-26/comp/ai_compiler/src/ops/operation.cpp
 
 CMakeFiles/dlc.dir/src/ops/operation.cpp.i: cmake_force
@@ -187,7 +201,7 @@ CMakeFiles/dlc.dir/src/ops/operation.cpp.s: cmake_force
 CMakeFiles/dlc.dir/src/ops/sub.cpp.o: CMakeFiles/dlc.dir/flags.make
 CMakeFiles/dlc.dir/src/ops/sub.cpp.o: /Users/justinkwinecki/Documents/Programming/Term_25-26/comp/ai_compiler/src/ops/sub.cpp
 CMakeFiles/dlc.dir/src/ops/sub.cpp.o: CMakeFiles/dlc.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/justinkwinecki/Documents/Programming/Term_25-26/comp/ai_compiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/dlc.dir/src/ops/sub.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/justinkwinecki/Documents/Programming/Term_25-26/comp/ai_compiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/dlc.dir/src/ops/sub.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/dlc.dir/src/ops/sub.cpp.o -MF CMakeFiles/dlc.dir/src/ops/sub.cpp.o.d -o CMakeFiles/dlc.dir/src/ops/sub.cpp.o -c /Users/justinkwinecki/Documents/Programming/Term_25-26/comp/ai_compiler/src/ops/sub.cpp
 
 CMakeFiles/dlc.dir/src/ops/sub.cpp.i: cmake_force
@@ -201,7 +215,7 @@ CMakeFiles/dlc.dir/src/ops/sub.cpp.s: cmake_force
 CMakeFiles/dlc.dir/src/utils/algorithms.cpp.o: CMakeFiles/dlc.dir/flags.make
 CMakeFiles/dlc.dir/src/utils/algorithms.cpp.o: /Users/justinkwinecki/Documents/Programming/Term_25-26/comp/ai_compiler/src/utils/algorithms.cpp
 CMakeFiles/dlc.dir/src/utils/algorithms.cpp.o: CMakeFiles/dlc.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/justinkwinecki/Documents/Programming/Term_25-26/comp/ai_compiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/dlc.dir/src/utils/algorithms.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/justinkwinecki/Documents/Programming/Term_25-26/comp/ai_compiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/dlc.dir/src/utils/algorithms.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/dlc.dir/src/utils/algorithms.cpp.o -MF CMakeFiles/dlc.dir/src/utils/algorithms.cpp.o.d -o CMakeFiles/dlc.dir/src/utils/algorithms.cpp.o -c /Users/justinkwinecki/Documents/Programming/Term_25-26/comp/ai_compiler/src/utils/algorithms.cpp
 
 CMakeFiles/dlc.dir/src/utils/algorithms.cpp.i: cmake_force
@@ -221,6 +235,7 @@ dlc_OBJECTS = \
 "CMakeFiles/dlc.dir/src/ops/add.cpp.o" \
 "CMakeFiles/dlc.dir/src/ops/div.cpp.o" \
 "CMakeFiles/dlc.dir/src/ops/mult.cpp.o" \
+"CMakeFiles/dlc.dir/src/ops/mat_mul.cpp.o" \
 "CMakeFiles/dlc.dir/src/ops/operation.cpp.o" \
 "CMakeFiles/dlc.dir/src/ops/sub.cpp.o" \
 "CMakeFiles/dlc.dir/src/utils/algorithms.cpp.o"
@@ -235,12 +250,13 @@ dlc: CMakeFiles/dlc.dir/src/ir/graph_builder.cpp.o
 dlc: CMakeFiles/dlc.dir/src/ops/add.cpp.o
 dlc: CMakeFiles/dlc.dir/src/ops/div.cpp.o
 dlc: CMakeFiles/dlc.dir/src/ops/mult.cpp.o
+dlc: CMakeFiles/dlc.dir/src/ops/mat_mul.cpp.o
 dlc: CMakeFiles/dlc.dir/src/ops/operation.cpp.o
 dlc: CMakeFiles/dlc.dir/src/ops/sub.cpp.o
 dlc: CMakeFiles/dlc.dir/src/utils/algorithms.cpp.o
 dlc: CMakeFiles/dlc.dir/build.make
 dlc: CMakeFiles/dlc.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/justinkwinecki/Documents/Programming/Term_25-26/comp/ai_compiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Linking CXX executable dlc"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/justinkwinecki/Documents/Programming/Term_25-26/comp/ai_compiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Linking CXX executable dlc"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/dlc.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

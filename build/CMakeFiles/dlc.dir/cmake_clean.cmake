@@ -11,6 +11,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/dlc.dir/src/ops/add.cpp.o.d"
   "CMakeFiles/dlc.dir/src/ops/div.cpp.o"
   "CMakeFiles/dlc.dir/src/ops/div.cpp.o.d"
+  "CMakeFiles/dlc.dir/src/ops/mat_mul.cpp.o"
+  "CMakeFiles/dlc.dir/src/ops/mat_mul.cpp.o.d"
   "CMakeFiles/dlc.dir/src/ops/mult.cpp.o"
   "CMakeFiles/dlc.dir/src/ops/mult.cpp.o.d"
   "CMakeFiles/dlc.dir/src/ops/operation.cpp.o"

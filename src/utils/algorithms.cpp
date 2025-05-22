@@ -68,6 +68,8 @@ void inference(Graph &graph, std::vector<Tensor> &inputs)
                 Tensor input2 = map[node->input[1]];
 
                 //do operation
+                std::cout << "Doing Operation" << std::endl;
+                
                 node->op->operate(input1, input2, result);
 
                 std::cout << "input 1 : \n";

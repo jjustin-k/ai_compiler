@@ -5,6 +5,7 @@
 #include"ops/operation.hpp"
 #include"ops/add.hpp"
 #include"ops/sub.hpp"
+#include"ops/mat_mul.hpp"
 #include"ops/mult.hpp"
 
 void buildTestGraph(Graph &graph){
@@ -37,7 +38,7 @@ void buildTestGraph(Graph &graph){
     m1.push_back(n3);
     //adding constant manually
    
-    graph_builder.addNode(graph, "Sub", new Subtract(), m1);
+    graph_builder.addNode(graph, "MatMul", new MatMul(), m1);
     
     graph.printGraph();
 

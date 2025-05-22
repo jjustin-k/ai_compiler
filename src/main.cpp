@@ -6,6 +6,7 @@
 #include"ops/add.hpp"
 #include"ops/sub.hpp"
 #include"ops/mult.hpp"
+#include"ops/mat_mul.hpp"
 
 void buildTestGraph(Graph &graph){
     std::cout << "Hello World" << std::endl;
@@ -37,7 +38,7 @@ void buildTestGraph(Graph &graph){
     m1.push_back(n3);
     //adding constant manually
    
-    graph_builder.addNode(graph, "Sub", new Subtract(), m1);
+    graph_builder.addNode(graph, "MatMul", new MatMul(), m1);
     
     graph.printGraph();
 
