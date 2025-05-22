@@ -17,6 +17,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/dlc.dir/src/ops/operation.cpp.o.d"
   "CMakeFiles/dlc.dir/src/ops/sub.cpp.o"
   "CMakeFiles/dlc.dir/src/ops/sub.cpp.o.d"
+  "CMakeFiles/dlc.dir/src/utils/algorithms.cpp.o"
+  "CMakeFiles/dlc.dir/src/utils/algorithms.cpp.o.d"
   "dlc"
   "dlc.pdb"
 )

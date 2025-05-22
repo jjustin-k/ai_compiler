@@ -28,6 +28,7 @@ void Tensor::setShape(std::vector<int> shape)
 void Tensor::setData(std::vector<float> data)
 {
     this->data = data;
+    size = data.size();
     if(!this->data.empty() && !this->shape.empty()){
         valid_tensor = true;
     }
@@ -58,6 +59,9 @@ void Tensor::reshape(std::vector<int> &new_shape)
 
 void Tensor::print()
 {
+    /*
+    only for 4d
+    
     for(size_t batch = 0; batch < shape[0]; batch++){
         std::cout << "Batch : " << batch << std::endl;
         for(size_t channel = 0; channel < shape[1]; channel ++){
@@ -71,5 +75,10 @@ void Tensor::print()
             std::cout << "\n";
         }
         std::cout << "--------------------------\n--------------------------\n";
+    }*/
+    
+    //assuming 1d for testing 
+    for(size_t i = 0; i < size; i++){
+        std::cout << data[i] << " " << std::endl;
     }
 }

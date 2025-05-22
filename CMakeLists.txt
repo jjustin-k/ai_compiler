@@ -15,6 +15,7 @@ add_executable(dlc
     src/ops/mult.cpp
     src/ops/operation.cpp
     src/ops/sub.cpp
+    src/utils/algorithms.cpp
 )
 
 

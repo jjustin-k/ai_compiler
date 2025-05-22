@@ -853,4 +853,10 @@ CMakeFiles/dlc.dir/src/main.cpp.o: \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__split_buffer \
   /Users/justinkwinecki/Documents/Programming/Term_25-26/comp/ai_compiler/include/ir/tensor.hpp \
   /Users/justinkwinecki/Documents/Programming/Term_25-26/comp/ai_compiler/include/./ops/operation.hpp \
-  /Users/justinkwinecki/Documents/Programming/Term_25-26/comp/ai_compiler/include/./ir/tensor.hpp
+  /Users/justinkwinecki/Documents/Programming/Term_25-26/comp/ai_compiler/include/./ir/tensor.hpp \
+  /Users/justinkwinecki/Documents/Programming/Term_25-26/comp/ai_compiler/include/utils/algorithms.hpp \
+  /Users/justinkwinecki/Documents/Programming/Term_25-26/comp/ai_compiler/include/./ir/graph.hpp \
+  /Users/justinkwinecki/Documents/Programming/Term_25-26/comp/ai_compiler/include/ops/operation.hpp \
+  /Users/justinkwinecki/Documents/Programming/Term_25-26/comp/ai_compiler/include/ops/add.hpp \
+  /Users/justinkwinecki/Documents/Programming/Term_25-26/comp/ai_compiler/include/ops/sub.hpp \
+  /Users/justinkwinecki/Documents/Programming/Term_25-26/comp/ai_compiler/include/ops/mult.hpp

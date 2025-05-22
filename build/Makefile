@@ -345,6 +345,30 @@ src/ops/sub.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/ops/sub.cpp.s
 .PHONY : src/ops/sub.cpp.s
 
+src/utils/algorithms.o: src/utils/algorithms.cpp.o
+.PHONY : src/utils/algorithms.o
+
+# target to build an object file
+src/utils/algorithms.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/utils/algorithms.cpp.o
+.PHONY : src/utils/algorithms.cpp.o
+
+src/utils/algorithms.i: src/utils/algorithms.cpp.i
+.PHONY : src/utils/algorithms.i
+
+# target to preprocess a source file
+src/utils/algorithms.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/utils/algorithms.cpp.i
+.PHONY : src/utils/algorithms.cpp.i
+
+src/utils/algorithms.s: src/utils/algorithms.cpp.s
+.PHONY : src/utils/algorithms.s
+
+# target to generate assembly for a file
+src/utils/algorithms.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/utils/algorithms.cpp.s
+.PHONY : src/utils/algorithms.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -381,6 +405,9 @@ help:
 	@echo "... src/ops/sub.o"
 	@echo "... src/ops/sub.i"
 	@echo "... src/ops/sub.s"
+	@echo "... src/utils/algorithms.o"
+	@echo "... src/utils/algorithms.i"
+	@echo "... src/utils/algorithms.s"
 .PHONY : help
 
 

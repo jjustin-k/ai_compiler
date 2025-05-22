@@ -849,4 +849,8 @@ CMakeFiles/dlc.dir/src/ir/graph_builder.cpp.o: \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__split_buffer \
   /Users/justinkwinecki/Documents/Programming/Term_25-26/comp/ai_compiler/include/../include/ir/tensor.hpp \
   /Users/justinkwinecki/Documents/Programming/Term_25-26/comp/ai_compiler/include/./ops/operation.hpp \
-  /Users/justinkwinecki/Documents/Programming/Term_25-26/comp/ai_compiler/include/./ir/tensor.hpp
+  /Users/justinkwinecki/Documents/Programming/Term_25-26/comp/ai_compiler/include/./ir/tensor.hpp \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/iostream \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/istream \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/ostream \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/bitset
