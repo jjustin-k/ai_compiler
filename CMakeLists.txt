@@ -18,7 +18,9 @@ add_executable(dlc
     src/ops/operation.cpp
     src/ops/sub.cpp
     src/utils/algorithms.cpp
+    src/utils/json_parser.cpp
 )
 
+include_directories("/opt/homebrew/include")
 
 target_include_directories(dlc PRIVATE include)
