@@ -14,6 +14,7 @@ add_executable(dlc
     src/ops/div.cpp
     src/ops/mult.cpp
     src/ops/mat_mul.cpp
+    src/ops/max_pooling.cpp
     src/ops/operation.cpp
     src/ops/sub.cpp
     src/utils/algorithms.cpp

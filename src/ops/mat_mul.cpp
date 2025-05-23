@@ -11,7 +11,6 @@ bool MatMul::compareVectorsAndIncr(std::vector<int>& v1, std::vector<int>& v2){
             return false;
         }
     }
-
     return same;
 }
 
@@ -45,8 +44,6 @@ void MatMul::operate(Tensor &aTensor1, Tensor &aTensor2, Tensor &result_location
     if((dim_1 != dim_2) || shape_1[dim_1 - 1] != shape_2[dim_2 - 2]){
         throw std::logic_error("Tensors are not same shape");
     }
-
-    // std::cout << data[batch*strides[0] + channel*strides[1] + row*strides[2] + col] << " ";
  
     std::vector<int> batch(dim_1 - 3); // taking all dims that arent the last two
 
@@ -78,12 +75,10 @@ void MatMul::operate(Tensor &aTensor1, Tensor &aTensor2, Tensor &result_location
                     sum += aTensor1.getDataA()[index_tensor_1] * aTensor2.getDataA()[index_tensor_2];
 
                     current++;
-
                 }   
                 
                 result_data.push_back( sum);
-                
-
+            
             }
         }
     } while (!compareVectorsAndIncr(batch, shape_1));

@@ -7,6 +7,7 @@
 #include"ops/sub.hpp"
 #include"ops/mult.hpp"
 #include"ops/mat_mul.hpp"
+#include"ops/max_pooling.hpp"
 
 void buildTestGraph(Graph &graph){
     std::cout << "Hello World" << std::endl;
@@ -87,10 +88,29 @@ void deleteGraph(Graph& graph){
 
 
 int main(){
-    Graph graph;
-    buildTestGraph(graph);
-    infer(graph);
+    Tensor tensor({
+        1.0f,   2.0f,  3.0f,  4.0f, 
+        5.0f,   6.0f,  7.0f,  8.0f,
+        9.0f,  10.0f, 11.0f, 12.0f,
+        13.0f, 14.0f, 15.0f, 16.0f
 
-    deleteGraph(graph);
+    }, {4,4});
+
+    Tensor kernel({
+        1, 2, 
+        3, 4
+
+    }, {2, 2});
+
+    Operation* max_pool = new MaxPooling({2,2}, {0,0,0,0});
+
+    Tensor result;
+    max_pool->operate(tensor, kernel, result);
+
+    result.print(0, 0, "");
+
+    delete max_pool;
+
+
     return 0;
 }
