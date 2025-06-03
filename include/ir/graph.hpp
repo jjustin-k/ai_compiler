@@ -6,6 +6,7 @@
 
 struct Node{
     std::string name;
+    std::string op_name;
     Operation* op;
     std::vector<Node*> output;
     std::vector<Node*> input;

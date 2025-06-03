@@ -11,39 +11,7 @@
 #include"ops/max_pooling.hpp"
 
 void buildTestGraph(Graph &graph){
-    std::cout << "Hello World" << std::endl;
-
-    Node* n = new Node;
-    Node* n1 = new Node;
-
-    Node* n3 = new Node;
-
-    n->name = "Input";
-    n1->name = "Input";
-    n3->name = "Input";
-
-    std::vector<Node*> input_layer;
-    std::vector<Node*> m1;
-    std::vector<Node*> m2;
-
-    input_layer.push_back(n);
-    input_layer.push_back(n1);
-    
-
-    GraphBuilder graph_builder;
-
-    //Have to manually add first node
-    graph.addNode(n);
-    graph.addNode(n1);
-    Node* n2 = graph_builder.addNode(graph, "Add", new Add(), input_layer);
-    m1.push_back(n2);
-    graph.addNode(n3);
-    m1.push_back(n3);
-    //adding constant manually
-   
-    graph_builder.addNode(graph, "MatMul", new MatMul(), m1);
-    
-    graph.printGraph();
+  
 
 }
 

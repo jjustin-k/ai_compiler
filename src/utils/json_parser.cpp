@@ -6,6 +6,7 @@
 #include "../include/ops/max_pooling.hpp"
 #include "../include/ops/mat_mul.hpp"
 #include "../include/ir/graph.hpp"
+#include "../include/codegen/codegen.hpp"
 #include <fstream>
 #include <iostream> 
 
@@ -29,21 +30,25 @@ void build(json data){
         }
         
         if(node["op"] == "add"){
-            graph_builder.addNode(graph, node["name"], new Add(), layer);
+            graph_builder.addNode(graph, node["name"], new Add(), "add", layer);
         }
         else if(node["op"] == "sub"){
-            graph_builder.addNode(graph, node["name"], new Subtract(), layer);
+            graph_builder.addNode(graph, node["name"], new Subtract(), "sub", layer);
         }
         else if(node["op"] == "maxpool2d"){
-            graph_builder.addNode(graph, node["name"], new MaxPooling(node["params"]["stride"], node["params"]["kernel_size"]), layer);
+            graph_builder.addNode(graph, node["name"], new MaxPooling(node["params"]["stride"], node["params"]["kernel_size"]), "maxpool", layer);
         }
         else if(node["op"] == "matmul"){
-            graph_builder.addNode(graph, node["name"], new MatMul(), layer);
+            graph_builder.addNode(graph, node["name"], new MatMul(), "matmul", layer);
         }
         
     }
 
     graph.printGraph();
+    CodeGen codegen("/Users/justinkwinecki/Documents/Programming/Term_25-26/comp/ai_compiler/out.c");
+
+    codegen.generateCode(graph);
+
     graph_builder.deleteGraph(graph);
 
 }

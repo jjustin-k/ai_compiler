@@ -17,6 +17,7 @@ add_executable(dlc
     src/ops/max_pooling.cpp
     src/ops/operation.cpp
     src/ops/sub.cpp
+    src/codegen/codegen.cpp
     src/utils/algorithms.cpp
     src/utils/json_parser.cpp
 )
