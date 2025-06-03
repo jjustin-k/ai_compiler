@@ -31,6 +31,7 @@ void buildTestGraph(Graph &graph){
     
 
     GraphBuilder graph_builder;
+
     //Have to manually add first node
     graph.addNode(n);
     graph.addNode(n1);
@@ -89,8 +90,8 @@ void deleteGraph(Graph& graph){
 
 
 int main(){
-    JSONParser parser;
-    parser.parse("ai_compiler/models/tiny_cov.json");
 
+    JSONParser parser;
+    parser.parse("/Users/justinkwinecki/Documents/Programming/Term_25-26/comp/ai_compiler/templates/example.json");
     return 0;
 }

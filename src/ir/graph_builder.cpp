@@ -31,3 +31,11 @@ Node* GraphBuilder::addNode(Graph& graph, std::string name, Operation* operation
     graph.addNode(new_node);
     return new_node;
 }
+
+
+Node* GraphBuilder::addInputNode(Graph& graph, std::string name){
+    Node* new_node = new Node;
+    new_node->name = name;
+    graph.addNode(new_node);
+    return new_node;
+}

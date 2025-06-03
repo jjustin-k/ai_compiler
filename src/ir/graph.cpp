@@ -5,6 +5,7 @@
 void Graph::addNode(Node* node)
 {
     nodes.push_back(node);
+    name_node[node->name] = node;
     if (node->input.empty()) {
         input_nodes.push_back(nodes.size() - 1);
     }
@@ -22,6 +23,17 @@ std::vector<Node *> Graph::getNodes()
 {
     return nodes;
 }
+
+
+bool Graph::nodeExists(std::string node_name){
+    return name_node[node_name] != NULL;
+}
+
+
+Node* Graph::getNode(std::string node_name){
+    return name_node[node_name];
+}
+
 
 std::vector<size_t> Graph::getInputNodes()
 {

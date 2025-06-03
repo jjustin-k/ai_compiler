@@ -1,6 +1,8 @@
 #include "parser.hpp"
 
-class JSONParser : public Parser{
+class JSONParser {
+    private:
+        
     public:
-        void parse(const std::string path) override;
+        void parse(const std::string path);
 };

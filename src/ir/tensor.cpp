@@ -57,7 +57,7 @@ std::vector<int> Tensor::getShape()
 }
 
 
-std::vector<float> Tensor::getDataV()
+std::vector<float>& Tensor::getDataV()
 {
     return this->data;
 }

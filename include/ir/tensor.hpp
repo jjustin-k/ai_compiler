@@ -16,7 +16,7 @@ class Tensor
         void setShape(std::vector<int> shape);
         void setData(std::vector<float> data);
         std::vector<int> getShape();
-        std::vector<float> getDataV();
+        std::vector<float> &getDataV();
         float* getDataA();
         void reshape(std::vector<int> &new_shape);
         void print(int dim, int offset, std::string indent);
