@@ -10,6 +10,8 @@ struct Node{
     Operation* op;
     std::vector<Node*> output;
     std::vector<Node*> input;
+    bool is_constant;
+    Tensor* tensor;
 };
 
 class Graph{

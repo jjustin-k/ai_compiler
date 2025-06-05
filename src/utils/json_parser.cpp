@@ -20,12 +20,20 @@ void build(json data){
         std::vector<Node*> layer;
         for(auto& input : node["inputs"]){
             std::cout << input << std::endl;
-
+            bool is_constant = false;   
+            Tensor* tensor = nullptr;
+            std::cout << input << std::endl;
+            if(data["weights"].contains(input)){
+                std::cout<< "Is weight" << std::endl;
+                is_constant = true;
+                tensor = new Tensor(data["weights"][input]["values"], data["weights"][input]["shape"]);
+            }
+            
             if(graph.nodeExists(input)){
                 layer.push_back(graph.getNode(input));
             }
             else{
-                graph_builder.addInputNode(graph, input);
+                graph_builder.addInputNode(graph, input, is_constant, tensor);
             }
         }
         
@@ -44,7 +52,7 @@ void build(json data){
         
     }
 
-    graph.printGraph();
+    //graph.printGraph();
     CodeGen codegen("/Users/justinkwinecki/Documents/Programming/Term_25-26/comp/ai_compiler/out.c");
 
     codegen.generateCode(graph);

@@ -22,9 +22,7 @@ LiteAI is a minimal AI compiler built from scratch. It parses a neural network d
 5. C++ code is generated
 6. Code is compiled and executed
 
-## Example
-
-```bash
-python3 compile.py examples/mlp_mnist.json
-g++ out.cpp -o run_model
-./run_model
+## TO-DO List
+- Finish c codegen for fusion test
+- run example of test
+- refactor prints to logging with debug levels

@@ -7,5 +7,5 @@ class GraphBuilder{
     public:
         void deleteGraph(Graph& graph);
         Node* addNode(Graph& graph, std::string name, Operation* operation, std::string op_name, std::vector<Node *>& inputs);
-        Node* addInputNode(Graph& graph, std::string name);
+        Node* addInputNode(Graph& graph, std::string name, bool is_constant, Tensor* tensor);
 };

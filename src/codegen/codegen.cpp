@@ -7,9 +7,7 @@
 CodeGen::CodeGen(std::string output_path)
 {
     this->output_path = output_path;
-    writeToFile("#include<stdio.h>\n\nint size = 10;\n", false);
-
-
+    writeToFile("#include<stdio.h>\n\n", false);
 }
 
 void CodeGen::writeToFile(std::string data, bool append)
@@ -48,41 +46,85 @@ std::string CodeGen::writeForLoop(std::string start, std::string end, std::strin
 {
     std::ostringstream loop_stream;
     loop_stream << "\nfor(" << start << "; " << end << "; " << change << "){\n    " <<
-                statement << "}\n";
+                statement << "\n}\n";
 
     std::string loop = loop_stream.str();
     return loop;
 }
 
-void CodeGen::generateCode(Graph& graph)
-{
-    //call a function for initial setup;
-    std::unordered_set<std::string> set;
+
+void CodeGen::generateConstants(Graph& graph){
+    std::vector<Node*> nodes = graph.getNodes();
+    std::cout << "Number of input nodes : " << graph.getInputNodes().size() << std::endl;
+    for(auto& input_index : graph.getInputNodes()){
+        std::cout << input_index << std::endl;
+        Node* input = nodes[input_index];
+        
+        if(!input->is_constant){
+            std::cout << input_index << std::endl;
+            continue;
+        }
+
+        Tensor* tensor = input->tensor;
+        int size = 1;
+        for(auto& dim : input->tensor->getShape()){
+            size *= dim;
+        }
+
+        std::ostringstream constant_stream;
+        constant_stream << "\nfloat " << input->name << "[] = {\n    ";
+        float* values = tensor->getDataA();
+        for(int i = 0; i < size; i++){
+            if(i != 0){
+                constant_stream << " ," << values[i]; 
+            }
+            else{
+                constant_stream << values[i];
+            }
+           
+        }
+        constant_stream << "};\n";
+        std::cout << constant_stream.str() << std::endl;
+        writeToFile(constant_stream.str(), true);
+    }
+}
+
+
+void CodeGen::generateOperations(Graph& graph){
     for(auto& node : graph.getNodes()){
+        std::unordered_set<std::string> set;
         std::cout << node->name << std::endl;
         if(node->op_name != ""){
             if(node->op_name == "relu" && !set.count("relu")){
                 std::string body = writeForLoop("int i = 0", "i < size", "i++", "out[i] = std::max(0.0f, out[i]);");
-                write_function("void", "relu", "float* out, size", body);
+                write_function("void", "relu", "float* out, int size", body);
                 set.insert("relu");
             }
             else if(node->op_name == "add" && !set.count("add")){
                 std::string body = writeForLoop("int i = 0", "i < size", "i++", "out[i] = a[i] + b[i];");
-                write_function("void", "add", "float* out, float* a, float* b, size", body);
+                write_function("void", "add", "float* out, float* a, float* b, int size", body);
                 set.insert("add");
             }
             else if(node->op_name == "sub" && !set.count("sub")){
                 std::string body = writeForLoop("int i = 0", "i < size", "i++", "out[i] = a[i] - b[i];");
-                write_function("void", "sub", "float* out, float* a, float* b, size", body);
+                write_function("void", "sub", "float* out, float* a, float* b, int size", body);
                 set.insert("sub");
             }
-            else if(node->op_name == "matmul" && !set.count("matmul")){
-                std::string body = writeForLoop("int i = 0", "i < size", "i++", "out[i] = a[i] - b[i];");
-                write_function("void", "matmul", "float* out, float* a, float* b, size", body);
-                set.insert("matmul");
+            else if(node->op_name == "matmul" && !set.count("matmul2d")){
+                std::string inner_loop = writeForLoop("int j = 0", "j < n", "j++", "out[i] += a[j] * b[j * m + i];");
+                std::string body = writeForLoop("int i = 0", "i < m", "i++", "out[i] = 0;\n" + inner_loop);
+                write_function("void", "matmul2d", "float* out, float* a, float* b, int m, int n", body);
+                set.insert("matmul2d");
             }
         }
     }
+}
+
+void CodeGen::generateCode(Graph& graph)
+{
+    //call a function for initial setup
+    generateConstants(graph);
+    generateOperations(graph);
 
 
 }

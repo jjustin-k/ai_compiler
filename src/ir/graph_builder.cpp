@@ -5,6 +5,7 @@ void GraphBuilder::deleteNode(Node * node)
 {
     //only have to delete the op since all nodes get deleted and inputs are refrences
     delete node->op;
+    delete node->tensor;
 }
 
 //not pointing at a graph because there should only be one throughout runtime?
@@ -24,7 +25,7 @@ Node* GraphBuilder::addNode(Graph& graph, std::string name, Operation* operation
     new_node->op = operation;
     new_node->input = inputs;
     new_node->op_name = op_name;
-
+    new_node->is_constant = false;
     for (auto& node : inputs) {
         node->output.push_back(new_node);
         new_node->input.push_back(node);
@@ -34,9 +35,11 @@ Node* GraphBuilder::addNode(Graph& graph, std::string name, Operation* operation
 }
 
 
-Node* GraphBuilder::addInputNode(Graph& graph, std::string name){
+Node* GraphBuilder::addInputNode(Graph& graph, std::string name, bool is_constant, Tensor* tensor){
     Node* new_node = new Node;
     new_node->name = name;
+    new_node->is_constant = is_constant;
+    new_node->tensor = tensor;
     graph.addNode(new_node);
     return new_node;
 }

@@ -60,6 +60,6 @@ void deleteGraph(Graph& graph){
 int main(){
 
     JSONParser parser;
-    parser.parse("/Users/justinkwinecki/Documents/Programming/Term_25-26/comp/ai_compiler/templates/example.json");
+    parser.parse("/Users/justinkwinecki/Documents/Programming/Term_25-26/comp/ai_compiler/templates/fusion_test.json");
     return 0;
 }
