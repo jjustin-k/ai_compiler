@@ -123,6 +123,11 @@ std::string CodeGen::generateOperations(Graph& graph){
                 std::string body = writeForLoop("int i = 0", "i < m", "i++", "out[i] = 0;\n" + inner_loop);
                 write_function("void", "matmul2d", "float* out, float* a, float* b, int m, int n", body);
                 set.insert("matmul2d");
+                if(!defined_vars.count(node->name)){
+                    //this is why I need to add shape to node
+                    function_call_stream << "\nfloat " << node->name << "[" << node->input[0]->name<<"_size * " << node->input[1]->name << "];\n";
+                    defined_vars.insert(node->name);
+                }
                 function_call_stream << "\n matmul(" << node->name << ", " << node->input[0]->name << ", " << node->input[0]->name << "_size);\n";
             }
             else if(node->op_name == "relu" && !set.count("relu")){
@@ -135,6 +140,11 @@ std::string CodeGen::generateOperations(Graph& graph){
                 std::string body = writeForLoop("int i = 0", "i < size", "i++", "out[i] = (a[i] > 0.0f) ? a[i] : 0.0f;");
                 write_function("void", "maxpool", "float* out, float* a, int size", body);
                 set.insert("maxpool");
+                if(!defined_vars.count(node->name)){
+                    //this is why I need to add shape to node
+                    function_call_stream << "\nfloat " << node->name << "[" << node->input[0]->name<<"_size];\n";
+                    defined_vars.insert(node->name);
+                }
                 function_call_stream << "\n maxpool(" << node->name << ", " << node->input[0]->name << ", " << node->input[0]->name << "_size);\n";
             }
         }

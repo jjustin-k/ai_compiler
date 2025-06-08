@@ -54,7 +54,11 @@ void relu(float *a, int size) {
 
 int main() {
 
+  float maxpool1[x_size];
+
   maxpool(maxpool1, x, x_size);
+
+  float matmul1[maxpool1_size * w1];
 
   matmul(matmul1, maxpool1, maxpool1_size);
 
