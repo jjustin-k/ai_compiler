@@ -28,7 +28,6 @@ Node* GraphBuilder::addNode(Graph& graph, std::string name, Operation* operation
     new_node->is_constant = false;
     for (auto& node : inputs) {
         node->output.push_back(new_node);
-        new_node->input.push_back(node);
     }
     graph.addNode(new_node);
     return new_node;

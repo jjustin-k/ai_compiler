@@ -26,7 +26,8 @@
         "inputs": ["x"],
         "params": {
           "kernel_size": [2, 2],
-          "stride": [2, 2]
+          "stride": [2, 2],
+          "pads": [0, 0, 0, 0]
         }
       },
       {
@@ -46,7 +47,7 @@
       },
       {
         "name": "out",
-        "op": "tanh",
+        "op": "relu",
         "inputs": ["relu1"]
       }
     ],

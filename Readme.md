@@ -24,5 +24,6 @@ LiteAI is a minimal AI compiler built from scratch. It parses a neural network d
 
 ## TO-DO List
 - Finish c codegen for fusion test
+- Maybe add shape to node
 - run example of test
 - refactor prints to logging with debug levels

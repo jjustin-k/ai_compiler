@@ -8,9 +8,11 @@ class CodeGen{
         void writeToFile(std::string data, bool append);
         //start : int i = 0, end : i < size, change : i++, statement  : int j = i
         std::string writeForLoop(std::string start, std::string end, std::string change, std::string statement);
+        void writeTestInput(Graph& graph);
         void write_function(std::string return_type, std::string name, std::string parameters, std::string body);
-        void generateOperations(Graph& graph);
+        std::string generateOperations(Graph& graph);
         void generateConstants(Graph& graph);
+        void generateMain(Graph& graph, std::string body);
 
     public:
         CodeGen(std::string output_path);

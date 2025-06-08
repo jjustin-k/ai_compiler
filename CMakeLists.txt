@@ -15,11 +15,17 @@ add_executable(dlc
     src/ops/mult.cpp
     src/ops/mat_mul.cpp
     src/ops/max_pooling.cpp
+    src/ops/relu.cpp
     src/ops/operation.cpp
     src/ops/sub.cpp
     src/codegen/codegen.cpp
     src/utils/algorithms.cpp
     src/utils/json_parser.cpp
+)
+
+add_custom_target(format
+    COMMAND clang-format -i ${CMAKE_SOURCE_DIR}/out.c
+    COMMENT "Formatting generated code"
 )
 
 include_directories("/opt/homebrew/include")

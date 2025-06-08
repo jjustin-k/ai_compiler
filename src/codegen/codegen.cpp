@@ -26,10 +26,7 @@ void CodeGen::writeToFile(std::string data, bool append)
             file << data;
             file.close();
         } 
-    
     }
-
-
 }
 
 void CodeGen::write_function(std::string return_type, std::string name, std::string parameters, std::string body){
@@ -54,6 +51,7 @@ std::string CodeGen::writeForLoop(std::string start, std::string end, std::strin
 
 
 void CodeGen::generateConstants(Graph& graph){
+    
     std::vector<Node*> nodes = graph.getNodes();
     std::cout << "Number of input nodes : " << graph.getInputNodes().size() << std::endl;
     for(auto& input_index : graph.getInputNodes()){
@@ -72,7 +70,8 @@ void CodeGen::generateConstants(Graph& graph){
         }
 
         std::ostringstream constant_stream;
-        constant_stream << "\nfloat " << input->name << "[] = {\n    ";
+        constant_stream << "\nint " <<  input->name << "_size = " << size << ";\n";
+        constant_stream << "float " << input->name << "[] = {\n    ";
         float* values = tensor->getDataA();
         for(int i = 0; i < size; i++){
             if(i != 0){
@@ -90,41 +89,89 @@ void CodeGen::generateConstants(Graph& graph){
 }
 
 
-void CodeGen::generateOperations(Graph& graph){
+std::string CodeGen::generateOperations(Graph& graph){
+    std::ostringstream function_call_stream;
     for(auto& node : graph.getNodes()){
         std::unordered_set<std::string> set;
-        std::cout << node->name << std::endl;
+        std::unordered_set<std::string> defined_vars;
+        std::cout << node->op_name << std::endl;
+        std::cout << "Input layer size : " << node->input.size() << std::endl;
+        for(auto& i : node->input){
+            std::cout << "Has input : " << i->name << std::endl;
+        }
         if(node->op_name != ""){
-            if(node->op_name == "relu" && !set.count("relu")){
-                std::string body = writeForLoop("int i = 0", "i < size", "i++", "out[i] = std::max(0.0f, out[i]);");
-                write_function("void", "relu", "float* out, int size", body);
-                set.insert("relu");
-            }
-            else if(node->op_name == "add" && !set.count("add")){
+
+            std::cout << node->op_name << std::endl;
+            if(node->op_name == "add" && !set.count("add")){
                 std::string body = writeForLoop("int i = 0", "i < size", "i++", "out[i] = a[i] + b[i];");
                 write_function("void", "add", "float* out, float* a, float* b, int size", body);
                 set.insert("add");
+                if(!defined_vars.count(node->name)){
+                    function_call_stream << "\nfloat " << node->name << "[" << node->input[0]->name<<"_size];\n";
+                    defined_vars.insert(node->name);
+                }
+                function_call_stream << "\n add(" << node->name << ", " << node->input[0]->name << ", " << node->input[1]->name <<  ", " << node->input[0]->name << "_size);\n";
             }
             else if(node->op_name == "sub" && !set.count("sub")){
                 std::string body = writeForLoop("int i = 0", "i < size", "i++", "out[i] = a[i] - b[i];");
                 write_function("void", "sub", "float* out, float* a, float* b, int size", body);
                 set.insert("sub");
+                function_call_stream << "\n sub(" << node->name << ", " << node->input[0]->name << ", " << node->input[0]->name << "_size);\n";
             }
             else if(node->op_name == "matmul" && !set.count("matmul2d")){
                 std::string inner_loop = writeForLoop("int j = 0", "j < n", "j++", "out[i] += a[j] * b[j * m + i];");
                 std::string body = writeForLoop("int i = 0", "i < m", "i++", "out[i] = 0;\n" + inner_loop);
                 write_function("void", "matmul2d", "float* out, float* a, float* b, int m, int n", body);
                 set.insert("matmul2d");
+                function_call_stream << "\n matmul(" << node->name << ", " << node->input[0]->name << ", " << node->input[0]->name << "_size);\n";
+            }
+            else if(node->op_name == "relu" && !set.count("relu")){
+                std::string body = writeForLoop("int i = 0", "i < size", "i++", "a[i] = (a[i] > 0.0f) ? a[i] : 0.0f;");
+                write_function("void", "relu", "float* a, int size", body);
+                set.insert("relu");
+                function_call_stream << "\n relu(" << node->name << ", " << node->input[0]->name << "_size);\n";
+            }
+            else if(node->op_name == "maxpool" && !set.count("maxpool")){
+                std::string body = writeForLoop("int i = 0", "i < size", "i++", "out[i] = (a[i] > 0.0f) ? a[i] : 0.0f;");
+                write_function("void", "maxpool", "float* out, float* a, int size", body);
+                set.insert("maxpool");
+                function_call_stream << "\n maxpool(" << node->name << ", " << node->input[0]->name << ", " << node->input[0]->name << "_size);\n";
             }
         }
     }
+    return function_call_stream.str();
+}
+
+void CodeGen::generateMain(Graph& graph, std::string body){
+
+    std::ostringstream main_stream;
+    main_stream << "\nint main(){\n" << body << "\nreturn 0;\n};\n";
+
+    writeToFile(main_stream.str(), true);
+
+}
+
+void CodeGen::writeTestInput(Graph& graph){
+
+    std::string input = "\nint x_size = 64;\nfloat x[] = {"
+      "1, 2, 3, 4, 5, 6, 7, 8,"
+      "9, 10, 11, 12, 13, 14, 15, 16,"
+      "17, 18, 19, 20, 21, 22, 23, 24,"
+      "25, 26, 27, 28, 29, 30, 31, 32,"
+      "33, 34, 35, 36, 37, 38, 39, 40,"
+      "41, 42, 43, 44, 45, 46, 47, 48,"
+      "49, 50, 51, 52, 53, 54, 55, 56,"
+      "57, 58, 59, 60, 61, 62, 63, 64"
+    "};\n";
+
+    writeToFile(input, true);
 }
 
 void CodeGen::generateCode(Graph& graph)
 {
     //call a function for initial setup
+    writeTestInput(graph);
     generateConstants(graph);
-    generateOperations(graph);
-
+    generateMain(graph, generateOperations(graph));
 
 }

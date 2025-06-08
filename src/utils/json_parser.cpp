@@ -5,9 +5,11 @@
 #include "../include/ops/sub.hpp"
 #include "../include/ops/max_pooling.hpp"
 #include "../include/ops/mat_mul.hpp"
+#include "../include/ops/relu.hpp"
 #include "../include/ir/graph.hpp"
 #include "../include/codegen/codegen.hpp"
 #include <fstream>
+#include <unordered_set>
 #include <iostream> 
 
 using json = nlohmann::json;
@@ -18,23 +20,25 @@ void build(json data){
     for(auto& node : data["nodes"]){
         std::cout << node << std::endl;
         std::vector<Node*> layer;
+
+        std::cout << node["inputs"].size() << std::endl;
         for(auto& input : node["inputs"]){
-            std::cout << input << std::endl;
+            //std::cout << input << std::endl;
             bool is_constant = false;   
             Tensor* tensor = nullptr;
-            std::cout << input << std::endl;
             if(data["weights"].contains(input)){
                 std::cout<< "Is weight" << std::endl;
                 is_constant = true;
                 tensor = new Tensor(data["weights"][input]["values"], data["weights"][input]["shape"]);
             }
             
-            if(graph.nodeExists(input)){
-                layer.push_back(graph.getNode(input));
+            if(!graph.nodeExists(input)){
+              graph_builder.addInputNode(graph, input, is_constant, tensor);
             }
-            else{
-                graph_builder.addInputNode(graph, input, is_constant, tensor);
-            }
+            
+            layer.push_back(graph.getNode(input));
+               
+            
         }
         
         if(node["op"] == "add"){
@@ -44,10 +48,17 @@ void build(json data){
             graph_builder.addNode(graph, node["name"], new Subtract(), "sub", layer);
         }
         else if(node["op"] == "maxpool2d"){
-            graph_builder.addNode(graph, node["name"], new MaxPooling(node["params"]["stride"], node["params"]["kernel_size"]), "maxpool", layer);
+            graph_builder.addNode(graph, node["name"], new MaxPooling(node["params"]["stride"], node["params"]["pads"]), "maxpool", layer);
         }
         else if(node["op"] == "matmul"){
             graph_builder.addNode(graph, node["name"], new MatMul(), "matmul", layer);
+        }
+        else if(node["op"] == "relu"){
+            graph_builder.addNode(graph, node["name"], new ReLU(), "relu", layer);
+        }
+
+        for(auto& i : layer){
+                std::cout << " ------In input layer : " << i->name << std::endl;
         }
         
     }
