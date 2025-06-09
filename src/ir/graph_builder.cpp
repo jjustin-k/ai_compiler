@@ -16,11 +16,11 @@ void GraphBuilder::deleteGraph(Graph& graph)
     }
 }
 
-
+//Issue in future may be because of passing in my reference instead of values
 Node* GraphBuilder::addNode(Graph& graph, std::string name, Operation* operation, std::string op_name, std::vector<Node *>& inputs)
 {
     Node* new_node = new Node;
-
+    
     new_node->name = name;
     new_node->op = operation;
     new_node->input = inputs;
@@ -30,6 +30,16 @@ Node* GraphBuilder::addNode(Graph& graph, std::string name, Operation* operation
         node->output.push_back(new_node);
     }
     graph.addNode(new_node);
+    return new_node;
+}
+
+
+Node* GraphBuilder::addNode(Graph& graph, std::string name, Operation* operation, std::string op_name, std::vector<Node *>& inputs, std::vector<int>& shape){
+    Node* new_node = addNode(graph, name, operation, op_name, inputs);
+    Tensor* tensor  = new Tensor();
+    tensor->setShape(shape);
+    new_node->tensor = tensor;
+    
     return new_node;
 }
 

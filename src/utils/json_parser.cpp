@@ -31,12 +31,18 @@ void build(json data){
                 is_constant = true;
                 tensor = new Tensor(data["weights"][input]["values"], data["weights"][input]["shape"]);
             }
+            else if (input == "x"){
+                tensor = new Tensor();
+                tensor->setShape( data["inputs"][input]["shape"]);
+                
+            }
             
             if(!graph.nodeExists(input)){
               graph_builder.addInputNode(graph, input, is_constant, tensor);
             }
             
             layer.push_back(graph.getNode(input));
+            
                
             
         }
@@ -48,10 +54,25 @@ void build(json data){
             graph_builder.addNode(graph, node["name"], new Subtract(), "sub", layer);
         }
         else if(node["op"] == "maxpool2d"){
-            graph_builder.addNode(graph, node["name"], new MaxPooling(node["params"]["stride"], node["params"]["pads"]), "maxpool", layer);
+            std::vector<int> dims;
+            //Assuming 2d mat mul, getting the dims. temp fix is /2
+            /*
+            Change this to actually calculate new dimensions of the maxpool result using stride and kernel size
+            */
+            std::cout << layer[0]->tensor->getShape()[1]/2 << std::endl;
+            dims.push_back(layer[0]->tensor->getShape()[0]/2);
+            dims.push_back(layer[0]->tensor->getShape()[1]/2);
+            graph_builder.addNode(graph, node["name"], new MaxPooling(node["params"]["stride"], node["params"]["pads"]), "maxpool", layer, dims);
         }
         else if(node["op"] == "matmul"){
-            graph_builder.addNode(graph, node["name"], new MatMul(), "matmul", layer);
+            std::vector<int> dims;
+            //Assuming 2d mat mul, getting the dims.
+            std::cout << "Here\n";
+            std::cout << layer[0]->name << " " << layer[1]->name << std::endl;
+            dims.push_back(layer[0]->tensor->getShape()[0]);
+            dims.push_back(layer[0]->tensor->getShape()[1]);
+            dims.push_back(layer[1]->tensor->getShape()[1]);
+            graph_builder.addNode(graph, node["name"], new MatMul(), "matmul", layer, dims);
         }
         else if(node["op"] == "relu"){
             graph_builder.addNode(graph, node["name"], new ReLU(), "relu", layer);

@@ -28,3 +28,7 @@ LiteAI is a minimal AI compiler built from scratch. It parses a neural network d
 - run example of test
 - refactor prints to logging with debug levels
 - Finish defining the variables in main for codegen
+- Actually calculate the size of the tensor after maxpool in json_parser
+- Refactor lines like this " else if(node->op_name == "matmul" && !set.count("matmul2d"))" to be nested
+- Change general_size to just be a constant throughout program
+- Fix pool layer
