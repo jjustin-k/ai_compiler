@@ -4,6 +4,7 @@
 class CodeGen{
 
     private:
+        int general_size;
         std::string output_path;
         void writeToFile(std::string data, bool append);
         //start : int i = 0, end : i < size, change : i++, statement  : int j = i
@@ -19,3 +20,9 @@ class CodeGen{
         void generateCode(Graph& graph);
         
 };
+
+/*
+ for(int i = 0; i < general_size; i++){
+    printf("%f ", add1[i]);
+  }
+  printf("\n");*/

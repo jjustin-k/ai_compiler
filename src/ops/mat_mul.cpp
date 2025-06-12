@@ -42,6 +42,7 @@ void MatMul::operate(Tensor &aTensor1, Tensor &aTensor2, Tensor &result_location
 
     //Implement broadcasting later
     if((dim_1 != dim_2) || shape_1[dim_1 - 1] != shape_2[dim_2 - 2]){
+        std::cout << dim_1 << " != " << dim_2 << " || " << shape_1[dim_1 - 1] << " != " << shape_2[dim_2 - 2] << std::endl;
         throw std::logic_error("Tensors are not same shape");
     }
  
