@@ -23,6 +23,7 @@ void layerize(Graph &graph, std::vector<size_t> *layer_sizes) {
 
 void inference(Graph &graph, std::vector<Tensor> &inputs) {
     // tracking which tensor is being used;
+    /*
     size_t current_tensor = 0;
 
     // associating nodes with their proper values via a map
@@ -82,6 +83,7 @@ void inference(Graph &graph, std::vector<Tensor> &inputs) {
         }
     }
     map[nodes[nodes.size() - 1]].print(0, 0, "");
+    */
 }
 
 void dfs(bool *visted, Node *node, size_t index) { visted[index] = true; }

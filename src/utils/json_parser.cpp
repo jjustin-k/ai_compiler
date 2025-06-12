@@ -2,11 +2,7 @@
 #include "../include/codegen/codegen.hpp"
 #include "../include/ir/graph.hpp"
 #include "../include/ir/graph_builder.hpp"
-#include "../include/ops/add.hpp"
-#include "../include/ops/mat_mul.hpp"
-#include "../include/ops/max_pooling.hpp"
-#include "../include/ops/relu.hpp"
-#include "../include/ops/sub.hpp"
+
 #include "../include/optimizer/optimizer.hpp"
 #include "../include/utils/algorithms.hpp"
 #include <fstream>
@@ -50,11 +46,11 @@ void build(json data) {
         std::cout << node["inputs"].size() << std::endl;
         for (auto &input : node["inputs"]) {
             // std::cout << input << std::endl;
-            bool is_constant = false;
             Tensor *tensor = nullptr;
+            OpType input_type = OpType::Input;
             if (data["weights"].contains(input)) {
                 std::cout << "Is weight" << std::endl;
-                is_constant = true;
+                input_type = OpType::Constant;
                 tensor = new Tensor(data["weights"][input]["values"],
                                     data["weights"][input]["shape"]);
             } else if (input == "x") {
@@ -63,17 +59,17 @@ void build(json data) {
             }
 
             if (!graph.nodeExists(input)) {
-                graph_builder.addInputNode(graph, input, is_constant, tensor);
+                graph_builder.addInputNode(graph, input, OpType::Constant,
+                                           tensor);
             }
 
             layer.push_back(graph.getNode(input));
         }
 
         if (node["op"] == "add") {
-            graph_builder.addNode(graph, node["name"], new Add(), "add", layer);
+            graph_builder.addNode(graph, node["name"], OpType::Add, layer);
         } else if (node["op"] == "sub") {
-            graph_builder.addNode(graph, node["name"], new Subtract(), "sub",
-                                  layer);
+            graph_builder.addNode(graph, node["name"], OpType::Sub, layer);
         } else if (node["op"] == "maxpool2d") {
             std::vector<int> dims;
             // Assuming 2d mat mul, getting the dims. temp fix is /2
@@ -81,26 +77,24 @@ void build(json data) {
             Change this to actually calculate new dimensions of the maxpool
             result using stride and kernel size
             */
-            std::cout << layer[0]->tensor->getShape()[1] / 2 << std::endl;
-            dims.push_back(layer[0]->tensor->getShape()[0] / 2);
-            dims.push_back(layer[0]->tensor->getShape()[1] / 2);
-            graph_builder.addNode(graph, node["name"],
-                                  new MaxPooling(node["params"]["stride"],
-                                                 node["params"]["pads"]),
-                                  "maxpool", layer, dims);
+
+            std::cout << layer[0]->shape[1] / 2 << std::endl;
+            dims.push_back(layer[0]->shape[0] / 2);
+            dims.push_back(layer[0]->shape[1] / 2);
+            graph_builder.addNode(graph, node["name"], OpType::MaxPool, layer,
+                                  dims);
         } else if (node["op"] == "matmul") {
             std::vector<int> dims;
             // Assuming 2d mat mul, getting the dims.
             std::cout << "Here\n";
             std::cout << layer[0]->name << " " << layer[1]->name << std::endl;
-            dims.push_back(layer[0]->tensor->getShape()[0]);
-            dims.push_back(layer[0]->tensor->getShape()[1]);
-            dims.push_back(layer[1]->tensor->getShape()[1]);
-            graph_builder.addNode(graph, node["name"], new MatMul(), "matmul",
-                                  layer, dims);
+            dims.push_back(layer[0]->shape[0]);
+            dims.push_back(layer[0]->shape[1]);
+            dims.push_back(layer[1]->shape[1]);
+            graph_builder.addNode(graph, node["name"], OpType::MatMul, layer,
+                                  dims);
         } else if (node["op"] == "relu") {
-            graph_builder.addNode(graph, node["name"], new ReLU(), "relu",
-                                  layer);
+            graph_builder.addNode(graph, node["name"], OpType::ReLU, layer);
         }
 
         for (auto &i : layer) {
@@ -112,7 +106,7 @@ void build(json data) {
     CodeGen codegen("/Users/justinkwinecki/Documents/Programming/Term_25-26/"
                     "comp/ai_compiler/out.c");
 
-    // codegen.generateCode(graph);
+    codegen.generateCode(graph);
 
     // run_cpp(graph);
 
