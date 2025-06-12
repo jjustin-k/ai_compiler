@@ -1,78 +1,55 @@
 
-#include<iostream>
 #include "../include/ir/tensor.hpp"
+#include <iostream>
 
-Tensor::Tensor(){}
+Tensor::Tensor() {}
 
-Tensor::Tensor(std::vector<float> data, std::vector<int> shape)
-{
+Tensor::Tensor(std::vector<float> data, std::vector<int> shape) {
     this->data = data;
     this->shape = shape;
     size = data.size();
-    
+
     calcAndSetStrides();
 }
 
+void Tensor::calcAndSetStrides() {
+    strides = std::vector<int>(shape.size());
 
-void Tensor::calcAndSetStrides()
-{
-    strides = std::vector<int>(shape.size()); 
-
-    for(size_t i = 0; i < shape.size(); i++){
-        for(size_t j = i ; j < shape.size(); j++){
-            if(j != i ){
+    for (size_t i = 0; i < shape.size(); i++) {
+        for (size_t j = i; j < shape.size(); j++) {
+            if (j != i) {
                 strides[i] *= this->shape[j];
-            }
-            else{
+            } else {
                 strides[i] = 1;
             }
         }
-    }   
+    }
 }
 
-
-void Tensor::setShape(std::vector<int> shape)
-{
+void Tensor::setShape(std::vector<int> shape) {
     this->shape = shape;
-    if(!this->data.empty() && !this->shape.empty()){
+    if (!this->data.empty() && !this->shape.empty()) {
         valid_tensor = true;
         calcAndSetStrides();
     }
 }
 
-
-void Tensor::setData(std::vector<float> data)
-{
+void Tensor::setData(std::vector<float> data) {
     this->data = data;
     size = data.size();
-    if(!this->data.empty() && !this->shape.empty()){
+    if (!this->data.empty() && !this->shape.empty()) {
         valid_tensor = true;
         calcAndSetStrides();
     }
 }
 
-std::vector<int> Tensor::getShape()
-{
-    return this->shape;
-}
+std::vector<int> Tensor::getShape() { return this->shape; }
 
+std::vector<float> &Tensor::getDataV() { return this->data; }
 
-std::vector<float>& Tensor::getDataV()
-{
-    return this->data;
-}
+float *Tensor::getDataA() { return this->data.data(); }
 
-
-float *Tensor::getDataA()
-{
-    return this->data.data();
-}
-
-
-void Tensor::reshape(std::vector<int> &new_shape)
-{
-
-}
+void Tensor::reshape(std::vector<int> &new_shape) {}
 
 void Tensor::print(int dim, int offset, std::string indent) {
     int dimSize = shape[dim];
@@ -104,5 +81,4 @@ void Tensor::print(int dim, int offset, std::string indent) {
     std::cout << "]";
     if (dim == 0)
         std::cout << "\n";
-
 }

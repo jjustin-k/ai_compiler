@@ -1,9 +1,8 @@
 #include "../include/ir/graph.hpp"
-#include<queue>
-#include<iostream>
+#include <iostream>
+#include <queue>
 
-void Graph::addNode(Node* node)
-{
+void Graph::addNode(Node *node) {
     nodes.push_back(node);
     name_node[node->name] = node;
     if (node->input.empty()) {
@@ -11,41 +10,24 @@ void Graph::addNode(Node* node)
     }
 }
 
-void Graph::printGraph()
-{
-    for(auto& node : nodes){
-        std::cout << "________________\n" << node->name << "\n________________\n" << "|\n|\n|\n|\nY" << std::endl;
+void Graph::printGraph() {
+    for (auto &node : nodes) {
+        std::cout << "________________\n"
+                  << node->name << "\n________________\n"
+                  << "|\n|\n|\n|\nY" << std::endl;
     }
 }
 
+std::vector<Node *> Graph::getNodes() { return nodes; }
 
-std::vector<Node *> Graph::getNodes()
-{
-    return nodes;
-}
-
-
-bool Graph::nodeExists(std::string node_name){
+bool Graph::nodeExists(std::string node_name) {
     return name_node[node_name] != NULL;
 }
 
+Node *Graph::getNode(std::string node_name) { return name_node[node_name]; }
 
-Node* Graph::getNode(std::string node_name){
-    return name_node[node_name];
-}
+std::vector<size_t> Graph::getInputNodes() { return input_nodes; }
 
+size_t Graph::getNumOfNodes() { return nodes.size(); }
 
-std::vector<size_t> Graph::getInputNodes()
-{
-    return input_nodes;
-}
-
-size_t Graph::getNumOfNodes()
-{
-    return nodes.size();
-}
-
-size_t Graph::getNumOfInputNodes()
-{
-    return input_nodes.size();
-}
+size_t Graph::getNumOfInputNodes() { return input_nodes.size(); }

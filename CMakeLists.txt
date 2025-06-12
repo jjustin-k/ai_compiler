@@ -18,9 +18,11 @@ add_executable(dlc
     src/ops/relu.cpp
     src/ops/operation.cpp
     src/ops/sub.cpp
+    src/optimizer/optimizer.cpp
     src/codegen/codegen.cpp
     src/utils/algorithms.cpp
     src/utils/json_parser.cpp
+
 )
 
 add_custom_target(format

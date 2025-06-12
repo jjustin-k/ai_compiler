@@ -14,6 +14,10 @@ struct Node{
     Tensor* tensor;
 };
 
+struct FusedNode{
+    std::vector<Node*> nodes;
+};
+
 class Graph{
     private:
         std::vector<Node*> nodes;
