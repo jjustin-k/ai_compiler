@@ -6,7 +6,7 @@ class GraphBuilder{
         void deleteNode(Node* node);
     public:
         void deleteGraph(Graph& graph);
-        Node* addNode(Graph& graph, std::string name, Operation* operation, std::string op_name, std::vector<Node *>& inputs);
-        Node* addNode(Graph& graph, std::string name, Operation* operation, std::string op_name, std::vector<Node *>& inputs, std::vector<int>& shape);
-        Node* addInputNode(Graph& graph, std::string name, bool is_constant, Tensor* tensor);
+        Node* addNode(Graph& graph, std::string name, OpType op_type, std::vector<Node *>& inputs);
+        Node* addNode(Graph& graph, std::string name, OpType op_type, std::vector<Node *>& inputs, std::vector<int>& shape);
+        Node* addInputNode(Graph& graph, std::string name, OpType op_type, Tensor* tensor);
 };

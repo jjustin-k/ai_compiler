@@ -4,13 +4,23 @@
 #include "tensor.hpp"
 #include "./ops/operation.hpp"
 
+enum class OpType {
+    Add,
+    Sub,
+    Conv2D,
+    ReLU,
+    MatMul,
+    MaxPool,
+    Constant,
+    Input
+};
+
 struct Node{
     std::string name;
-    std::string op_name;
-    Operation* op;
+    OpType op_type;
     std::vector<Node*> output;
     std::vector<Node*> input;
-    bool is_constant;
+    std::vector<int> shape;
     Tensor* tensor;
 };
 
