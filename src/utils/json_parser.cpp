@@ -102,21 +102,16 @@ void build(json data) {
         }
     }
 
-    // graph.printGraph();
+    graph.printGraph();
     CodeGen codegen("/Users/justinkwinecki/Documents/Programming/Term_25-26/"
                     "comp/ai_compiler/out.c");
-
+    // Optimizer opt(graph);
     codegen.generateCode(graph);
+
+    graph.printGraph();
 
     // run_cpp(graph);
 
-    std::cout << graph.getNode("add1") << "  " << graph.getNode("relu1")
-              << std::endl;
-    FusedNode fn;
-    fn.nodes.push_back(graph.getNode("add1"));
-    fn.nodes.push_back(graph.getNode("relu1"));
-
-    Optimizer opt(graph);
     graph_builder.deleteGraph(graph);
 }
 

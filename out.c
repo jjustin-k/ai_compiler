@@ -95,10 +95,5 @@ int main() {
 
   relu(add1);
 
-  for(int i = 0; i < 16; i++){
-    printf("%f ", add1[i]);
-  }
-  printf("\n");
-
   return 0;
 };

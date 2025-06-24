@@ -109,10 +109,11 @@ std::string CodeGen::generateOperations(Graph &graph) {
         for (auto &i : node->input) {
             std::cout << "Has input : " << i->name << std::endl;
         }
-        if (node->op_type != OpType::Constant ||
+        if (node->op_type != OpType::Constant &&
             node->op_type != OpType::Input) {
 
             std::cout << node->name << std::endl;
+            std::cout << static_cast<int>(node->op_type) << std::endl;
             if (node->op_type == OpType::Add) {
 
                 if (!set.count("add")) {
@@ -240,6 +241,27 @@ std::string CodeGen::generateOperations(Graph &graph) {
                     << "\n maxpool2d(" << node->name << ", "
                     << node->input[0]->name << ", " << node->input[0]->shape[0]
                     << ", " << node->input[0]->shape[1] << ", 2, 2);\n";
+            } else if (node->op_type == OpType::AddReLU) {
+                std::cout << "FUSED OPERATION" << std::endl;
+                if (!set.count("add_relu")) {
+                    std::string body = writeForLoop(
+                        "int i = 0", "i < " + std::to_string(general_size),
+                        "i++",
+                        "out[i] = (a[i] + b[i] > 0.0f) ? (a[i] + b[i]) : "
+                        "0.0f;");
+                    write_function("void", "add_relu",
+                                   "float* out, float* a, float* b", body);
+                    set.insert("add_relu");
+                }
+
+                if (!defined_vars.count(node->name)) {
+                    function_call_stream << "\nfloat " << node->name << "["
+                                         << general_size << "];\n";
+                    defined_vars.insert(node->name);
+                }
+                function_call_stream << "\n add_relu(" << node->name << ", "
+                                     << node->input[0]->name << ", "
+                                     << node->input[1]->name << ");\n";
             }
         }
     }
