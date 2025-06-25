@@ -12,6 +12,13 @@ add_executable(dlc
     src/ir/graph_builder.cpp
     src/optimizer/optimizer.cpp
     src/codegen/codegen.cpp
+    src/codegen/emitter.cpp
+    src/codegen/matmul_emitter.cpp
+    src/codegen/maxpool_emitter.cpp
+    src/codegen/add_relu_emitter.cpp
+    src/codegen/relu_emitter.cpp
+    src/codegen/add_emitter.cpp
+    src/codegen/sub_emitter.cpp
     src/utils/algorithms.cpp
     src/utils/json_parser.cpp
 

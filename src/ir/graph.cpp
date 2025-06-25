@@ -22,9 +22,7 @@ std::vector<Node *> Graph::getNodes() { return nodes; }
 
 void Graph::setNodes(std::vector<Node *> nodes) { this->nodes = nodes; }
 
-bool Graph::nodeExists(std::string node_name) {
-    return name_node[node_name] != NULL;
-}
+bool Graph::nodeExists(std::string node_name) { return name_node[node_name] != NULL; }
 
 Node *Graph::getNode(std::string node_name) { return name_node[node_name]; }
 

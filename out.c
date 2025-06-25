@@ -14,6 +14,22 @@ int b1_size = 16;
 float b1[] = {0.1, 0, -0.1, 0.2, 0.1, 0, -0.1, 0.2,
               0.1, 0, -0.1, 0.2, 0.1, 0, -0.1, 0.2};
 
+void matmul2d(float *out, float *a, float *b, int m, int n, int p) {
+
+  for (int i = 0; i < m; i++) {
+
+    for (int j = 0; j < p; j++) {
+      float sum = 0.0f;
+
+      for (int k = 0; k < n; k++) {
+        sum += a[i * n + k] * b[k * p + j];
+      }
+
+      out[i * p + j] = sum;
+    }
+  }
+}
+
 void maxpool2d(float *out, float *a, int width, int height, int pool_size,
                int stride) {
 
@@ -44,32 +60,16 @@ void maxpool2d(float *out, float *a, int width, int height, int pool_size,
   }
 }
 
-void matmul2d(float *out, float *a, float *b, int m, int n, int p) {
-
-  for (int i = 0; i < m; i++) {
-
-    for (int j = 0; j < p; j++) {
-      float sum = 0.0f;
-
-      for (int k = 0; k < n; k++) {
-        sum += a[i * n + k] * b[k * p + j];
-      }
-
-      out[i * p + j] = sum;
-    }
-  }
-}
-
 void add(float *out, float *a, float *b) {
 
-  for (int i = 0; i < 16; i++) {
+  for (int i = 0; i < 64; i++) {
     out[i] = a[i] + b[i];
   }
 }
 
 void relu(float *a) {
 
-  for (int i = 0; i < 16; i++) {
+  for (int i = 0; i < 64; i++) {
     a[i] = (a[i] > 0.0f) ? a[i] : 0.0f;
   }
 }
@@ -87,7 +87,7 @@ int main() {
 
   matmul2d(matmul1, maxpool1, w1, matmul1_m, matmul1_n, matmul1_p);
 
-  float add1[16];
+  float add1[64];
 
   add(add1, matmul1, b1);
 

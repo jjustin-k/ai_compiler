@@ -166,6 +166,30 @@ src/codegen/codegen.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/codegen/codegen.cpp.s
 .PHONY : src/codegen/codegen.cpp.s
 
+src/codegen/matmul_emitter.o: src/codegen/matmul_emitter.cpp.o
+.PHONY : src/codegen/matmul_emitter.o
+
+# target to build an object file
+src/codegen/matmul_emitter.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/codegen/matmul_emitter.cpp.o
+.PHONY : src/codegen/matmul_emitter.cpp.o
+
+src/codegen/matmul_emitter.i: src/codegen/matmul_emitter.cpp.i
+.PHONY : src/codegen/matmul_emitter.i
+
+# target to preprocess a source file
+src/codegen/matmul_emitter.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/codegen/matmul_emitter.cpp.i
+.PHONY : src/codegen/matmul_emitter.cpp.i
+
+src/codegen/matmul_emitter.s: src/codegen/matmul_emitter.cpp.s
+.PHONY : src/codegen/matmul_emitter.s
+
+# target to generate assembly for a file
+src/codegen/matmul_emitter.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/codegen/matmul_emitter.cpp.s
+.PHONY : src/codegen/matmul_emitter.cpp.s
+
 src/ir/graph.o: src/ir/graph.cpp.o
 .PHONY : src/ir/graph.o
 
@@ -347,6 +371,9 @@ help:
 	@echo "... src/codegen/codegen.o"
 	@echo "... src/codegen/codegen.i"
 	@echo "... src/codegen/codegen.s"
+	@echo "... src/codegen/matmul_emitter.o"
+	@echo "... src/codegen/matmul_emitter.i"
+	@echo "... src/codegen/matmul_emitter.s"
 	@echo "... src/ir/graph.o"
 	@echo "... src/ir/graph.i"
 	@echo "... src/ir/graph.s"

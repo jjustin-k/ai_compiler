@@ -20,8 +20,7 @@ void GraphBuilder::deleteGraph(Graph &graph) {
 }
 
 // Issue in future may be because of passing in my reference instead of values
-Node *GraphBuilder::addNode(Graph &graph, std::string name, OpType op_type,
-                            std::vector<Node *> &inputs) {
+Node *GraphBuilder::addNode(Graph &graph, std::string name, OpType op_type, std::vector<Node *> &inputs) {
     Node *new_node = new Node;
 
     new_node->name = name;
@@ -34,8 +33,7 @@ Node *GraphBuilder::addNode(Graph &graph, std::string name, OpType op_type,
     return new_node;
 }
 
-Node *GraphBuilder::addNode(Graph &graph, std::string name, OpType op_type,
-                            std::vector<Node *> &inputs,
+Node *GraphBuilder::addNode(Graph &graph, std::string name, OpType op_type, std::vector<Node *> &inputs,
                             std::vector<int> &shape) {
     Node *new_node = addNode(graph, name, op_type, inputs);
     new_node->shape = shape;
@@ -43,8 +41,7 @@ Node *GraphBuilder::addNode(Graph &graph, std::string name, OpType op_type,
     return new_node;
 }
 
-Node *GraphBuilder::addInputNode(Graph &graph, std::string name, OpType op_type,
-                                 Tensor *tensor) {
+Node *GraphBuilder::addInputNode(Graph &graph, std::string name, OpType op_type, Tensor *tensor) {
     Node *new_node = new Node;
     new_node->name = name;
     new_node->op_type = op_type;

@@ -28,11 +28,8 @@ Optimizer::Optimizer(Graph &graph) {
                     fused->output = next_node->output;
                     fused->op_type = OpType::AddReLU;
 
-                    nodes.erase(
-                        std::remove(nodes.begin(), nodes.end(), next_node),
-                        nodes.end());
-                    nodes.erase(std::remove(nodes.begin(), nodes.end(), n),
-                                nodes.end());
+                    nodes.erase(std::remove(nodes.begin(), nodes.end(), next_node), nodes.end());
+                    nodes.erase(std::remove(nodes.begin(), nodes.end(), n), nodes.end());
 
                     nodes.insert(nodes.begin() + index, fused);
 
