@@ -12,7 +12,8 @@ enum class OpType {
     MaxPool,
     Constant,
     Input,
-    AddReLU
+    AddReLU,
+    FullyConnected
 };
 
 struct Node{
@@ -30,7 +31,7 @@ class Graph{
     private:
         std::vector<Node*> nodes;
         std::unordered_map<std::string, Node*> name_node;
-        std::vector<size_t> input_nodes;
+        std::vector<Node*> input_nodes;
         
     public:
         std::vector<Node*> optimized_nodes; //store nodes that have been fused to delete
@@ -40,7 +41,8 @@ class Graph{
         Node* getNode(std::string node_name);
         void setNodes(std::vector<Node*> nodes);
         std::vector<Node*> getNodes();
-        std::vector<size_t> getInputNodes();
+        std::vector<Node*> getInputNodes();
+        void addInputNode(Node* node);
         size_t getNumOfNodes();
         size_t getNumOfInputNodes();
   

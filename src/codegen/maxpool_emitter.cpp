@@ -1,11 +1,25 @@
 #include "../include/codegen/maxpool_emitter.hpp"
 
 void MaxPoolEmitter::emitFunctionDefinition(std::vector<int> &sizes) {
-    std::string n_loop = writeForLoop("int k = 0", "k < n", "k++", "sum += a[i * n + k] * b[k * p + j];");
-    std::string inner_loop = writeForLoop("int j = 0", "j < p", "j++",
-                                          "float sum = 0.0f;\n" + n_loop + "\nout[i * p + j] = sum;\n");
-    std::string body = writeForLoop("int i = 0", "i < m", "i++", inner_loop);
-    write_function("void", "matmul2d", "float* out, float* a, float* b, int m, int n, int p", body);
+    std::string body = "\nint ix = ox * stride + kx;\nint iy = "
+                       "oy * stride + ky;\n"
+                       "float val = a[iy * width + ix];\n"
+                       "if (val > max_val) {\n"
+                       "max_val = val;\n"
+                       "};";
+    std::string kx_loop = writeForLoop("int kx = 0", "kx < pool_size", "kx++", body);
+    std::string ky_loop = writeForLoop("int ky = 0", "ky < pool_size", "ky++", kx_loop);
+    std::string ox_loop =
+        writeForLoop("int ox = 0", "ox < out_w", "ox++",
+                     "\nfloat max_val = -1e9;\n" + ky_loop + "\nout[oy * out_w + ox] = max_val;\n");
+    std::string oy_loop = writeForLoop("int oy = 0", "oy < out_h", "oy++", ox_loop);
+
+    write_function("void", "maxpool2d",
+                   " float *out, float *a, int width, int height, int "
+                   "pool_size, int stride",
+                   "\nint out_w = (width - pool_size) / stride + 1;"
+                   "\nint out_h = (height - pool_size) / stride + 1;\n" +
+                       oy_loop);
 }
 
 void MaxPoolEmitter::emitInvocation(std::ostream &out, Node *node,

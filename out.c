@@ -14,21 +14,13 @@ int b1_size = 16;
 float b1[] = {0.1, 0, -0.1, 0.2, 0.1, 0, -0.1, 0.2,
               0.1, 0, -0.1, 0.2, 0.1, 0, -0.1, 0.2};
 
-void matmul2d(float *out, float *a, float *b, int m, int n, int p) {
+int w2_size = 16;
+float w2[] = {-0.1, 0.2, -0.3, 0.4, -0.5, 0.6,  0.7, -0.8,
+              0.9,  -1,  -0.1, 0.2, -0.3, -0.4, 0.5, -0.6};
 
-  for (int i = 0; i < m; i++) {
-
-    for (int j = 0; j < p; j++) {
-      float sum = 0.0f;
-
-      for (int k = 0; k < n; k++) {
-        sum += a[i * n + k] * b[k * p + j];
-      }
-
-      out[i * p + j] = sum;
-    }
-  }
-}
+int b2_size = 16;
+float b2[] = {-0.1, 0,   0.1, -0.2, 0.1, 0.2, -0.1, 0,
+              -0.1, 0.1, 0,   -0.2, 0,   0.1, -0.1, 0.2};
 
 void maxpool2d(float *out, float *a, int width, int height, int pool_size,
                int stride) {
@@ -60,40 +52,65 @@ void maxpool2d(float *out, float *a, int width, int height, int pool_size,
   }
 }
 
-void add(float *out, float *a, float *b) {
+void fully_connected(float *out, float *a, float *b, float *c, int m, int n,
+                     int p) {
 
-  for (int i = 0; i < 64; i++) {
-    out[i] = a[i] + b[i];
+  for (int i = 0; i < m; i++) {
+
+    for (int j = 0; j < p; j++) {
+      float sum = 0.0f;
+
+      for (int k = 0; k < n; k++) {
+        sum += a[i * n + k] * b[k * p + j];
+      }
+
+      out[i * p + j] = sum + c[i * p + j];
+    }
   }
 }
 
 void relu(float *a) {
 
-  for (int i = 0; i < 64; i++) {
+  for (int i = 0; i < 16; i++) {
     a[i] = (a[i] > 0.0f) ? a[i] : 0.0f;
+  }
+}
+
+void add_relu(float *out, float *a, float *b) {
+
+  for (int i = 0; i < 16; i++) {
+    out[i] = (a[i] + b[i] > 0.0f) ? (a[i] + b[i]) : 0.0f;
   }
 }
 
 int main() {
 
-  float maxpool1[64];
+  float maxpool1[16];
 
   maxpool2d(maxpool1, x, 8, 8, 2, 2);
-  int matmul1_m = 4;
-  int matmul1_n = 4;
-  int matmul1_p = 4;
 
-  float matmul1[16];
+  float add1[16];
+  int add1_m = 4;
+  int add1_n = 4;
+  int add1_p = 4;
 
-  matmul2d(matmul1, maxpool1, w1, matmul1_m, matmul1_n, matmul1_p);
-
-  float add1[64];
-
-  add(add1, matmul1, b1);
+  fully_connected(add1, maxpool1, w1, b1, add1_m, add1_n, add1_p);
 
   relu(add1);
 
-  relu(add1);
+  float add2[16];
+  int add2_m = 4;
+  int add2_n = 4;
+  int add2_p = 4;
 
+  fully_connected(add2, maxpool1, w2, b2, add2_m, add2_n, add2_p);
+
+  relu(add2);
+
+  float out[16];
+
+  add_relu(out, add1, add2);
+
+  
   return 0;
 };

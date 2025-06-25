@@ -24,23 +24,22 @@ LiteAI is a minimal AI compiler built from scratch. It parses a neural network d
 
 ## In Progress
 - Operator fusion
-- Changing code gen to emitters
+
 
 ## TO-DO List
 - Change every op in maxpool to constants
 - refactor prints to logging with debug levels
 - Actually calculate the size of the tensor after maxpool in json_parser
-- Change general_size to just be a constant throughout program
 - Keep track of function calls -> if only one call, can remove more paramters and add constants
-- Make code gen versions of : optimized, and un-optimized for benchmarking
 - Make the graph level optimizations with Optimizer
 - Make the code level optimizations in CodeGen
 - Change these to constants   
 int matmul1_m = 4;
-  int matmul1_n = 4;
-  int matmul1_p = 4;
+int matmul1_n = 4;
+int matmul1_p = 4;
 - Remove the c++ implementations of operations, instead just have symbolic refernces for cg
 
 ## Future additions
 - Create a runtime environment to be able to load in already compiled models and run inference
 - Generate code on the GPU
+

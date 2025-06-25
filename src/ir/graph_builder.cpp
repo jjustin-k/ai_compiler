@@ -11,7 +11,6 @@ void GraphBuilder::deleteNode(Node *node) {
 void GraphBuilder::deleteGraph(Graph &graph) {
     for (auto &node : graph.getNodes()) {
         deleteNode(node);
-        delete node;
     }
     for (auto &node : graph.optimized_nodes) {
         deleteNode(node);

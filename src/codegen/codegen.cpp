@@ -2,6 +2,7 @@
 #include "../include/codegen/add_emitter.hpp"
 #include "../include/codegen/add_relu_emitter.hpp"
 #include "../include/codegen/emitter.hpp"
+#include "../include/codegen/fully_connected_emitter.hpp"
 #include "../include/codegen/matmul_emitter.hpp"
 #include "../include/codegen/maxpool_emitter.hpp"
 #include "../include/codegen/relu_emitter.hpp"
@@ -35,38 +36,17 @@ void CodeGen::writeToFile(std::string data, bool append) {
     }
 }
 
-void CodeGen::write_function(std::string return_type, std::string name, std::string parameters,
-                             std::string body) {
-    std::ostringstream function_stream;
-    function_stream << "\n"
-                    << return_type << " " << name << "(" << parameters << "){\n    " << body << "\n}\n";
-
-    std::string function = function_stream.str();
-    writeToFile(function, true);
-}
-
-std::string CodeGen::writeForLoop(std::string start, std::string end, std::string change,
-                                  std::string statement) {
-    std::ostringstream loop_stream;
-    loop_stream << "\nfor(" << start << "; " << end << "; " << change << "){\n    " << statement << "\n}\n";
-
-    std::string loop = loop_stream.str();
-    return loop;
-}
-
 void CodeGen::generateConstants(Graph &graph) {
 
     std::vector<Node *> nodes = graph.getNodes();
-    std::cout << "Number of input nodes : " << graph.getInputNodes().size() << std::endl;
-    for (auto &input_index : graph.getInputNodes()) {
-        std::cout << input_index << std::endl;
-        Node *input = nodes[input_index];
+
+    std::cout << "INPUTS" << std::endl;
+    for (auto &input : graph.getInputNodes()) {
 
         std::cout << input->name << std::endl;
         if (input->name == "x") {
             general_size = 64;
-            std::cout << input->name << std::endl;
-            std::cout << input_index << std::endl;
+
             continue;
         }
 
@@ -87,11 +67,10 @@ void CodeGen::generateConstants(Graph &graph) {
             } else {
                 constant_stream << tensor->getDataA()[i];
             }
-            std::cout << "Here" << std::endl;
         }
 
         constant_stream << "};\n";
-        std::cout << constant_stream.str() << std::endl;
+        // std::cout << constant_stream.str() << std::endl;
 
         writeToFile(constant_stream.str(), true);
     }
@@ -110,18 +89,24 @@ std::string CodeGen::generateOperations(Graph &graph) {
                                                         {OpType::MatMul, new MatMulEmitter()},
                                                         {OpType::Sub, new SubEmitter()},
                                                         {OpType::MaxPool, new MaxPoolEmitter()},
-                                                        {OpType::ReLU, new ReLUEmitter()}
+                                                        {OpType::ReLU, new ReLUEmitter()},
+                                                        {OpType::FullyConnected, new FullyConnectedEmitter()}
 
     };
+    std::cout << "Operation Gen..." << std::endl;
 
     for (auto &node : graph.getNodes()) {
         std::vector<int> sizes;
-        
+
         if (node->op_type == OpType::Constant || node->op_type == OpType::Input) {
             continue;
         }
-
-        sizes.push_back(general_size);
+        int s = 1;
+        for (auto &a : node->shape) {
+            s *= a;
+        }
+        /* Change this hardcoded value*/
+        sizes.push_back(16);
 
         OpEmitter *emitter = emitters[node->op_type];
 
@@ -130,7 +115,7 @@ std::string CodeGen::generateOperations(Graph &graph) {
             set.insert(emitter->getOpName());
         }
 
-        emitter->emitInvocation(function_call_stream, node, defined_vars, general_size);
+        emitter->emitInvocation(function_call_stream, node, defined_vars, sizes[0]);
     }
 
     for (auto &a : emitters) {
@@ -139,7 +124,6 @@ std::string CodeGen::generateOperations(Graph &graph) {
 
     return function_call_stream.str();
 }
-
 
 void CodeGen::generateMain(Graph &graph, std::string body) {
 

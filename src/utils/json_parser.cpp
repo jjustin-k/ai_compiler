@@ -46,7 +46,6 @@ void build(json data) {
             Tensor *tensor = nullptr;
             OpType input_type = OpType::Input;
             if (data["weights"].contains(input)) {
-                std::cout << "Is weight" << std::endl;
                 input_type = OpType::Constant;
                 tensor = new Tensor(data["weights"][input]["values"], data["weights"][input]["shape"]);
             } else if (input == "x") {
@@ -73,15 +72,13 @@ void build(json data) {
             result using stride and kernel size
             */
 
-            std::cout << layer[0]->shape[1] / 2 << std::endl;
             dims.push_back(layer[0]->shape[0] / 2);
             dims.push_back(layer[0]->shape[1] / 2);
             graph_builder.addNode(graph, node["name"], OpType::MaxPool, layer, dims);
         } else if (node["op"] == "matmul") {
             std::vector<int> dims;
             // Assuming 2d mat mul, getting the dims.
-            std::cout << "Here\n";
-            std::cout << layer[0]->name << " " << layer[1]->name << std::endl;
+
             dims.push_back(layer[0]->shape[0]);
             dims.push_back(layer[0]->shape[1]);
             dims.push_back(layer[1]->shape[1]);
@@ -98,13 +95,14 @@ void build(json data) {
     graph.printGraph();
     CodeGen codegen("/Users/justinkwinecki/Documents/Programming/Term_25-26/"
                     "comp/ai_compiler/out.c");
-    // Optimizer opt(graph);
+
+    Optimizer opt(graph);
     codegen.generateCode(graph);
 
     graph.printGraph();
 
     // run_cpp(graph);
-
+    std::cout << "Done" << std::endl;
     graph_builder.deleteGraph(graph);
 }
 

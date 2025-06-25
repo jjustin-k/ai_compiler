@@ -18,6 +18,7 @@ add_executable(dlc
     src/codegen/add_relu_emitter.cpp
     src/codegen/relu_emitter.cpp
     src/codegen/add_emitter.cpp
+    src/codegen/fully_connected_emitter.cpp
     src/codegen/sub_emitter.cpp
     src/utils/algorithms.cpp
     src/utils/json_parser.cpp
