@@ -8,7 +8,7 @@ LiteAI is a minimal AI compiler built from scratch. It parses a neural network d
 
 - Custom computation graph IR
 - Shape inference and dependency analysis
-- Graph optimization passes (CSE, dead code elimination, operator fusion)
+- Graph optimization passes (operator fusion)
 - Lowering to loop-based IR
 - C++ code generation for matrix and element-wise operations
 - End-to-end inference on MNIST using a simple MLP
