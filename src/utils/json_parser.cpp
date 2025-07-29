@@ -7,6 +7,7 @@
 #include "../include/utils/algorithms.hpp"
 #include <fstream>
 #include <iostream>
+#include "utils/logger.hpp"
 #include <nlohmann/json.hpp>
 #include <unordered_set>
 
@@ -29,20 +30,27 @@ void run_cpp(Graph &graph) {
     Tensor C(b1, {4, 4});
 
     std::vector<Tensor> inputs = {A, B, C};
-    graph.printGraph();
+
+    if(globalLogger.currentLevel == Logger::LogLevel::DEBUG){
+        graph.printGraph();
+    }
+    
     inference(graph, inputs);
 }
 
 void build(json data) {
+    globalLogger.info("Starting build...");
     Graph graph;
     GraphBuilder graph_builder;
+    globalLogger.info("Creating computation graph from json data...");
     for (auto &node : data["nodes"]) {
-        std::cout << node << std::endl;
+        
+        globalLogger.debug("Current node in json data: " + node["name"].dump());
         std::vector<Node *> layer;
 
-        std::cout << node["inputs"].size() << std::endl;
+        globalLogger.debug("Current node's number of inputs: " + std::to_string(node["inputs"].size()));
         for (auto &input : node["inputs"]) {
-            // std::cout << input << std::endl;
+            
             Tensor *tensor = nullptr;
             OpType input_type = OpType::Input;
             if (data["weights"].contains(input)) {
@@ -86,23 +94,29 @@ void build(json data) {
         } else if (node["op"] == "relu") {
             graph_builder.addNode(graph, node["name"], OpType::ReLU, layer);
         }
-
+        
+        globalLogger.debug("Model's input layer");
         for (auto &i : layer) {
-            std::cout << " ------In input layer : " << i->name << std::endl;
+            globalLogger.debug(i->name );
+            
         }
     }
 
-    graph.printGraph();
+    if(globalLogger.currentLevel == Logger::LogLevel::DEBUG){
+        graph.printGraph();
+    }
     CodeGen codegen("/Users/justinkwinecki/Documents/Programming/Term_25-26/"
                     "comp/ai_compiler/out.c");
 
     Optimizer opt(graph);
     codegen.generateCode(graph);
 
-    graph.printGraph();
+    if(globalLogger.currentLevel == Logger::LogLevel::DEBUG){
+        graph.printGraph();
+    }
 
-    // run_cpp(graph);
-    std::cout << "Done" << std::endl;
+    run_cpp(graph);
+    globalLogger.info("Finished build");
     graph_builder.deleteGraph(graph);
 }
 

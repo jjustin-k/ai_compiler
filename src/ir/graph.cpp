@@ -1,4 +1,5 @@
 #include "../include/ir/graph.hpp"
+#include "utils/logger.hpp"
 #include <iostream>
 #include <queue>
 
@@ -11,10 +12,12 @@ void Graph::addNode(Node *node) {
 }
 
 void Graph::printGraph() {
+    
     for (auto &node : nodes) {
         std::cout << "________________\n"
                   << node->name << "\n________________\n"
                   << "|\n|\n|\n|\nY" << std::endl;
+        
     }
 }
 

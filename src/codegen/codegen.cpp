@@ -7,6 +7,7 @@
 #include "../include/codegen/maxpool_emitter.hpp"
 #include "../include/codegen/relu_emitter.hpp"
 #include "../include/codegen/sub_emitter.hpp"
+#include "utils/logger.hpp"
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -39,11 +40,13 @@ void CodeGen::writeToFile(std::string data, bool append) {
 void CodeGen::generateConstants(Graph &graph) {
 
     std::vector<Node *> nodes = graph.getNodes();
-
-    std::cout << "INPUTS" << std::endl;
+   
+ 
+    globalLogger.debug("Inputs");
     for (auto &input : graph.getInputNodes()) {
 
-        std::cout << input->name << std::endl;
+       
+        globalLogger.debug("Input node : " + input->name );
         if (input->name == "x") {
             general_size = 64;
 
@@ -70,7 +73,7 @@ void CodeGen::generateConstants(Graph &graph) {
         }
 
         constant_stream << "};\n";
-        // std::cout << constant_stream.str() << std::endl;
+
 
         writeToFile(constant_stream.str(), true);
     }
@@ -93,7 +96,7 @@ std::string CodeGen::generateOperations(Graph &graph) {
                                                         {OpType::FullyConnected, new FullyConnectedEmitter()}
 
     };
-    std::cout << "Operation Gen..." << std::endl;
+    globalLogger.info("Generating Operations");
 
     for (auto &node : graph.getNodes()) {
         std::vector<int> sizes;

@@ -142,6 +142,54 @@ format/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/format.dir/build.make CMakeFiles/format.dir/build
 .PHONY : format/fast
 
+src/codegen/add_emitter.o: src/codegen/add_emitter.cpp.o
+.PHONY : src/codegen/add_emitter.o
+
+# target to build an object file
+src/codegen/add_emitter.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/codegen/add_emitter.cpp.o
+.PHONY : src/codegen/add_emitter.cpp.o
+
+src/codegen/add_emitter.i: src/codegen/add_emitter.cpp.i
+.PHONY : src/codegen/add_emitter.i
+
+# target to preprocess a source file
+src/codegen/add_emitter.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/codegen/add_emitter.cpp.i
+.PHONY : src/codegen/add_emitter.cpp.i
+
+src/codegen/add_emitter.s: src/codegen/add_emitter.cpp.s
+.PHONY : src/codegen/add_emitter.s
+
+# target to generate assembly for a file
+src/codegen/add_emitter.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/codegen/add_emitter.cpp.s
+.PHONY : src/codegen/add_emitter.cpp.s
+
+src/codegen/add_relu_emitter.o: src/codegen/add_relu_emitter.cpp.o
+.PHONY : src/codegen/add_relu_emitter.o
+
+# target to build an object file
+src/codegen/add_relu_emitter.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/codegen/add_relu_emitter.cpp.o
+.PHONY : src/codegen/add_relu_emitter.cpp.o
+
+src/codegen/add_relu_emitter.i: src/codegen/add_relu_emitter.cpp.i
+.PHONY : src/codegen/add_relu_emitter.i
+
+# target to preprocess a source file
+src/codegen/add_relu_emitter.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/codegen/add_relu_emitter.cpp.i
+.PHONY : src/codegen/add_relu_emitter.cpp.i
+
+src/codegen/add_relu_emitter.s: src/codegen/add_relu_emitter.cpp.s
+.PHONY : src/codegen/add_relu_emitter.s
+
+# target to generate assembly for a file
+src/codegen/add_relu_emitter.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/codegen/add_relu_emitter.cpp.s
+.PHONY : src/codegen/add_relu_emitter.cpp.s
+
 src/codegen/codegen.o: src/codegen/codegen.cpp.o
 .PHONY : src/codegen/codegen.o
 
@@ -166,6 +214,54 @@ src/codegen/codegen.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/codegen/codegen.cpp.s
 .PHONY : src/codegen/codegen.cpp.s
 
+src/codegen/emitter.o: src/codegen/emitter.cpp.o
+.PHONY : src/codegen/emitter.o
+
+# target to build an object file
+src/codegen/emitter.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/codegen/emitter.cpp.o
+.PHONY : src/codegen/emitter.cpp.o
+
+src/codegen/emitter.i: src/codegen/emitter.cpp.i
+.PHONY : src/codegen/emitter.i
+
+# target to preprocess a source file
+src/codegen/emitter.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/codegen/emitter.cpp.i
+.PHONY : src/codegen/emitter.cpp.i
+
+src/codegen/emitter.s: src/codegen/emitter.cpp.s
+.PHONY : src/codegen/emitter.s
+
+# target to generate assembly for a file
+src/codegen/emitter.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/codegen/emitter.cpp.s
+.PHONY : src/codegen/emitter.cpp.s
+
+src/codegen/fully_connected_emitter.o: src/codegen/fully_connected_emitter.cpp.o
+.PHONY : src/codegen/fully_connected_emitter.o
+
+# target to build an object file
+src/codegen/fully_connected_emitter.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/codegen/fully_connected_emitter.cpp.o
+.PHONY : src/codegen/fully_connected_emitter.cpp.o
+
+src/codegen/fully_connected_emitter.i: src/codegen/fully_connected_emitter.cpp.i
+.PHONY : src/codegen/fully_connected_emitter.i
+
+# target to preprocess a source file
+src/codegen/fully_connected_emitter.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/codegen/fully_connected_emitter.cpp.i
+.PHONY : src/codegen/fully_connected_emitter.cpp.i
+
+src/codegen/fully_connected_emitter.s: src/codegen/fully_connected_emitter.cpp.s
+.PHONY : src/codegen/fully_connected_emitter.s
+
+# target to generate assembly for a file
+src/codegen/fully_connected_emitter.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/codegen/fully_connected_emitter.cpp.s
+.PHONY : src/codegen/fully_connected_emitter.cpp.s
+
 src/codegen/matmul_emitter.o: src/codegen/matmul_emitter.cpp.o
 .PHONY : src/codegen/matmul_emitter.o
 
@@ -189,6 +285,78 @@ src/codegen/matmul_emitter.s: src/codegen/matmul_emitter.cpp.s
 src/codegen/matmul_emitter.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/codegen/matmul_emitter.cpp.s
 .PHONY : src/codegen/matmul_emitter.cpp.s
+
+src/codegen/maxpool_emitter.o: src/codegen/maxpool_emitter.cpp.o
+.PHONY : src/codegen/maxpool_emitter.o
+
+# target to build an object file
+src/codegen/maxpool_emitter.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/codegen/maxpool_emitter.cpp.o
+.PHONY : src/codegen/maxpool_emitter.cpp.o
+
+src/codegen/maxpool_emitter.i: src/codegen/maxpool_emitter.cpp.i
+.PHONY : src/codegen/maxpool_emitter.i
+
+# target to preprocess a source file
+src/codegen/maxpool_emitter.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/codegen/maxpool_emitter.cpp.i
+.PHONY : src/codegen/maxpool_emitter.cpp.i
+
+src/codegen/maxpool_emitter.s: src/codegen/maxpool_emitter.cpp.s
+.PHONY : src/codegen/maxpool_emitter.s
+
+# target to generate assembly for a file
+src/codegen/maxpool_emitter.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/codegen/maxpool_emitter.cpp.s
+.PHONY : src/codegen/maxpool_emitter.cpp.s
+
+src/codegen/relu_emitter.o: src/codegen/relu_emitter.cpp.o
+.PHONY : src/codegen/relu_emitter.o
+
+# target to build an object file
+src/codegen/relu_emitter.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/codegen/relu_emitter.cpp.o
+.PHONY : src/codegen/relu_emitter.cpp.o
+
+src/codegen/relu_emitter.i: src/codegen/relu_emitter.cpp.i
+.PHONY : src/codegen/relu_emitter.i
+
+# target to preprocess a source file
+src/codegen/relu_emitter.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/codegen/relu_emitter.cpp.i
+.PHONY : src/codegen/relu_emitter.cpp.i
+
+src/codegen/relu_emitter.s: src/codegen/relu_emitter.cpp.s
+.PHONY : src/codegen/relu_emitter.s
+
+# target to generate assembly for a file
+src/codegen/relu_emitter.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/codegen/relu_emitter.cpp.s
+.PHONY : src/codegen/relu_emitter.cpp.s
+
+src/codegen/sub_emitter.o: src/codegen/sub_emitter.cpp.o
+.PHONY : src/codegen/sub_emitter.o
+
+# target to build an object file
+src/codegen/sub_emitter.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/codegen/sub_emitter.cpp.o
+.PHONY : src/codegen/sub_emitter.cpp.o
+
+src/codegen/sub_emitter.i: src/codegen/sub_emitter.cpp.i
+.PHONY : src/codegen/sub_emitter.i
+
+# target to preprocess a source file
+src/codegen/sub_emitter.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/codegen/sub_emitter.cpp.i
+.PHONY : src/codegen/sub_emitter.cpp.i
+
+src/codegen/sub_emitter.s: src/codegen/sub_emitter.cpp.s
+.PHONY : src/codegen/sub_emitter.s
+
+# target to generate assembly for a file
+src/codegen/sub_emitter.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/codegen/sub_emitter.cpp.s
+.PHONY : src/codegen/sub_emitter.cpp.s
 
 src/ir/graph.o: src/ir/graph.cpp.o
 .PHONY : src/ir/graph.o
@@ -358,6 +526,30 @@ src/utils/json_parser.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/utils/json_parser.cpp.s
 .PHONY : src/utils/json_parser.cpp.s
 
+src/utils/logger.o: src/utils/logger.cpp.o
+.PHONY : src/utils/logger.o
+
+# target to build an object file
+src/utils/logger.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/utils/logger.cpp.o
+.PHONY : src/utils/logger.cpp.o
+
+src/utils/logger.i: src/utils/logger.cpp.i
+.PHONY : src/utils/logger.i
+
+# target to preprocess a source file
+src/utils/logger.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/utils/logger.cpp.i
+.PHONY : src/utils/logger.cpp.i
+
+src/utils/logger.s: src/utils/logger.cpp.s
+.PHONY : src/utils/logger.s
+
+# target to generate assembly for a file
+src/utils/logger.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dlc.dir/build.make CMakeFiles/dlc.dir/src/utils/logger.cpp.s
+.PHONY : src/utils/logger.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -368,12 +560,33 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... format"
 	@echo "... dlc"
+	@echo "... src/codegen/add_emitter.o"
+	@echo "... src/codegen/add_emitter.i"
+	@echo "... src/codegen/add_emitter.s"
+	@echo "... src/codegen/add_relu_emitter.o"
+	@echo "... src/codegen/add_relu_emitter.i"
+	@echo "... src/codegen/add_relu_emitter.s"
 	@echo "... src/codegen/codegen.o"
 	@echo "... src/codegen/codegen.i"
 	@echo "... src/codegen/codegen.s"
+	@echo "... src/codegen/emitter.o"
+	@echo "... src/codegen/emitter.i"
+	@echo "... src/codegen/emitter.s"
+	@echo "... src/codegen/fully_connected_emitter.o"
+	@echo "... src/codegen/fully_connected_emitter.i"
+	@echo "... src/codegen/fully_connected_emitter.s"
 	@echo "... src/codegen/matmul_emitter.o"
 	@echo "... src/codegen/matmul_emitter.i"
 	@echo "... src/codegen/matmul_emitter.s"
+	@echo "... src/codegen/maxpool_emitter.o"
+	@echo "... src/codegen/maxpool_emitter.i"
+	@echo "... src/codegen/maxpool_emitter.s"
+	@echo "... src/codegen/relu_emitter.o"
+	@echo "... src/codegen/relu_emitter.i"
+	@echo "... src/codegen/relu_emitter.s"
+	@echo "... src/codegen/sub_emitter.o"
+	@echo "... src/codegen/sub_emitter.i"
+	@echo "... src/codegen/sub_emitter.s"
 	@echo "... src/ir/graph.o"
 	@echo "... src/ir/graph.i"
 	@echo "... src/ir/graph.s"
@@ -395,6 +608,9 @@ help:
 	@echo "... src/utils/json_parser.o"
 	@echo "... src/utils/json_parser.i"
 	@echo "... src/utils/json_parser.s"
+	@echo "... src/utils/logger.o"
+	@echo "... src/utils/logger.i"
+	@echo "... src/utils/logger.s"
 .PHONY : help
 
 
