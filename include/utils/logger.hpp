@@ -1,31 +1,46 @@
 #pragma once
 #include <string>
+#include <iostream>
 
 class Logger {
 public:
-
     enum class LogLevel {
-        ERROR = 0,
-        WARNING = 1,
-        INFO = 2,
-        DEBUG = 3,
-        OFF = 4
+        ERROR,
+        WARNING,
+        INFO,
+        DEBUG
     };
 
-    LogLevel currentLevel;
-    
     Logger(LogLevel level);
-
     void setLevel(LogLevel level);
-    void log(LogLevel level, const std::string& message);
 
-    void error(const std::string& message);
-    void warning(const std::string& message);
-    void info(const std::string& message);
-    void debug(const std::string& message);
+    template <typename T>
+    void error(const T &message) {
+        if (currentLevel >= LogLevel::ERROR)
+            std::cout << "[ERROR] " << message << std::endl;
+    }
 
-    
+    template <typename T>
+    void warning(const T &message) {
+        if (currentLevel >= LogLevel::WARNING)
+            std::cout << "[WARNING] " << message << std::endl;
+    }
+
+    template <typename T>
+    void info(const T &message) {
+        if (currentLevel >= LogLevel::INFO)
+            std::cout << "[INFO] " << message << std::endl;
+    }
+
+    template <typename T>
+    void debug(const T &message) {
+        if (currentLevel >= LogLevel::DEBUG)
+            std::cout << "[DEBUG] " << message << std::endl;
+    }
+
+
+    LogLevel currentLevel;
 };
 
-
+// Global instance
 extern Logger globalLogger;

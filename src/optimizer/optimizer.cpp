@@ -56,14 +56,13 @@ Optimizer::Optimizer(Graph &graph) {
                     std::vector<Node *> inputs;
                     for (auto &i : n->input) {
                         inputs.push_back(i);
-       
                     }
                     for (auto &i : next_node->input) {
 
                         if (i == n) {
                             continue;
                         }
-                   
+
                         inputs.push_back(i);
                     }
 
@@ -74,7 +73,6 @@ Optimizer::Optimizer(Graph &graph) {
                     fused->output = next_node->output;
                     fused->op_type = OpType::FullyConnected;
 
-                  
                     nodes.erase(std::remove(nodes.begin(), nodes.end(), next_node), nodes.end());
                     nodes.erase(std::remove(nodes.begin(), nodes.end(), n), nodes.end());
 
@@ -86,7 +84,7 @@ Optimizer::Optimizer(Graph &graph) {
                     graph.optimized_nodes.push_back(next_node);
                     graph.optimized_nodes.push_back(n);
                     // delete n;
-                   
+
                     globalLogger.debug("Name of fused node: " + fused->name);
                 } else {
                     globalLogger.info("Node " + n->name + " not optimized");
@@ -97,5 +95,4 @@ Optimizer::Optimizer(Graph &graph) {
         }
         index++;
     }
-    
 }

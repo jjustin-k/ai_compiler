@@ -40,14 +40,11 @@ void CodeGen::writeToFile(std::string data, bool append) {
 void CodeGen::generateConstants(Graph &graph) {
 
     std::vector<Node *> nodes = graph.getNodes();
-   
- 
-    globalLogger.debug("Inputs");
+    globalLogger.info("Generating constants");
     for (auto &input : graph.getInputNodes()) {
 
-       
-        globalLogger.debug("Input node : " + input->name );
-        if (input->name == "x") {
+        globalLogger.debug("Input node : " + input->name);
+        if (input->name == "Input3") {
             general_size = 64;
 
             continue;
@@ -73,7 +70,6 @@ void CodeGen::generateConstants(Graph &graph) {
         }
 
         constant_stream << "};\n";
-
 
         writeToFile(constant_stream.str(), true);
     }

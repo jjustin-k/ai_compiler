@@ -5,9 +5,9 @@
 
 #include "../include/optimizer/optimizer.hpp"
 #include "../include/utils/algorithms.hpp"
+#include "utils/logger.hpp"
 #include <fstream>
 #include <iostream>
-#include "utils/logger.hpp"
 #include <nlohmann/json.hpp>
 #include <unordered_set>
 
@@ -31,10 +31,10 @@ void run_cpp(Graph &graph) {
 
     std::vector<Tensor> inputs = {A, B, C};
 
-    if(globalLogger.currentLevel == Logger::LogLevel::DEBUG){
+    if (globalLogger.currentLevel == Logger::LogLevel::DEBUG) {
         graph.printGraph();
     }
-    
+
     inference(graph, inputs);
 }
 
@@ -44,13 +44,13 @@ void build(json data) {
     GraphBuilder graph_builder;
     globalLogger.info("Creating computation graph from json data...");
     for (auto &node : data["nodes"]) {
-        
+
         globalLogger.debug("Current node in json data: " + node["name"].dump());
         std::vector<Node *> layer;
 
         globalLogger.debug("Current node's number of inputs: " + std::to_string(node["inputs"].size()));
         for (auto &input : node["inputs"]) {
-            
+
             Tensor *tensor = nullptr;
             OpType input_type = OpType::Input;
             if (data["weights"].contains(input)) {
@@ -94,15 +94,14 @@ void build(json data) {
         } else if (node["op"] == "relu") {
             graph_builder.addNode(graph, node["name"], OpType::ReLU, layer);
         }
-        
+
         globalLogger.debug("Model's input layer");
         for (auto &i : layer) {
-            globalLogger.debug(i->name );
-            
+            globalLogger.debug(i->name);
         }
     }
 
-    if(globalLogger.currentLevel == Logger::LogLevel::DEBUG){
+    if (globalLogger.currentLevel == Logger::LogLevel::DEBUG) {
         graph.printGraph();
     }
     CodeGen codegen("/Users/justinkwinecki/Documents/Programming/Term_25-26/"
@@ -111,7 +110,7 @@ void build(json data) {
     Optimizer opt(graph);
     codegen.generateCode(graph);
 
-    if(globalLogger.currentLevel == Logger::LogLevel::DEBUG){
+    if (globalLogger.currentLevel == Logger::LogLevel::DEBUG) {
         graph.printGraph();
     }
 
@@ -120,9 +119,132 @@ void build(json data) {
     graph_builder.deleteGraph(graph);
 }
 
+void flatten_array(const json &j, std::vector<float> &out) {
+    if (j.is_array()) {
+        for (const auto &element : j) {
+            flatten_array(element, out);
+        }
+    } else if (j.is_number_integer() || j.is_number_float()) {
+        out.push_back(j.get<float>());
+    } else {
+        std::cout << j << std::endl;
+        throw std::runtime_error("Expected integer value in tensor data");
+    }
+}
+
+void build_from_onnx(json data) {
+    globalLogger.info("Starting build from onnx...");
+
+    Graph graph;
+    GraphBuilder graph_builder;
+    globalLogger.info("Creating computation graph from json data...");
+    json nodes = data["nodes"];
+    for (auto &node : nodes) {
+
+        globalLogger.debug("Current node in json data: " + node["name"].dump());
+        std::vector<Node *> layer;
+
+        globalLogger.debug("Current node's number of inputs: " + std::to_string(node["inputs"].size()));
+        for (auto &raw_input : node["inputs"]) {
+            globalLogger.debug("Raw input: ");
+            globalLogger.debug(raw_input);
+            std::string input = raw_input.get<std::string>();
+            globalLogger.debug("Input: " + input);
+            Tensor *tensor = nullptr;
+            OpType input_type = OpType::Input;
+            if (data["initializers"].contains(input)) {
+                globalLogger.debug("Input: " + input);
+                input_type = OpType::Constant;
+                if (data["initializers"][raw_input]["values"].is_array()) {
+                    globalLogger.debug("Mutiple values");
+                    globalLogger.debug(data["initializers"][raw_input]["values"].dump());
+                    globalLogger.debug(data["initializers"][raw_input]["dims"].dump());
+
+                    std::vector<float> flat_array;
+
+                    flatten_array(data["initializers"][raw_input]["values"], flat_array);
+
+                    tensor = new Tensor(flat_array, data["initializers"][raw_input]["dims"]);
+                } else {
+                    globalLogger.debug("Single or no value");
+                    globalLogger.debug(data["initializers"][raw_input]["dims"]);
+                    // globalLogger.debug(std::to_string(data["initializers"][raw_input]["data_type"].dump()));
+
+                    tensor = new Tensor({data["initializers"][raw_input]["values"]},
+                                        data["initializers"][raw_input]["dims"]);
+                }
+
+            } else if (input == "Input3") {
+                tensor = new Tensor();
+                tensor->setShape(data["inputs"][0]["shape"]);
+            }
+
+            if (!graph.nodeExists(input)) {
+                graph_builder.addInputNode(graph, input, OpType::Constant, tensor);
+            }
+
+            layer.push_back(graph.getNode(input));
+            globalLogger.debug("Added node to layer");
+        }
+
+        globalLogger.debug(node["outouts"]);
+        std::string node_name = node["outputs"][0].get<std::string>();
+        globalLogger.info("Finished inputs for :" + node_name);
+
+        if (node["op_type"] == "add") {
+            graph_builder.addNode(graph, node["name"], OpType::Add, layer);
+        } else if (node["op_type"] == "sub") {
+            graph_builder.addNode(graph, node["name"], OpType::Sub, layer);
+        } else if (node["op_type"] == "maxpool") {
+            std::vector<int> dims;
+            // Assuming 2d mat mul, getting the dims. temp fix is /2
+            /*
+            Change this to actually calculate new dimensions of the maxpool
+            result using stride and kernel size
+            */
+
+            dims.push_back(layer[0]->shape[0] / 2);
+            dims.push_back(layer[0]->shape[1] / 2);
+            graph_builder.addNode(graph, node_name, OpType::MaxPool, layer, dims);
+        } else if (node["op_type"] == "matmul") {
+            std::vector<int> dims;
+            // Assuming 2d mat mul, getting the dims.
+
+            dims.push_back(layer[0]->shape[0]);
+            dims.push_back(layer[0]->shape[1]);
+            dims.push_back(layer[1]->shape[1]);
+            graph_builder.addNode(graph, node_name, OpType::MatMul, layer, dims);
+        } else if (node["op_typ"] == "relu") {
+            graph_builder.addNode(graph, node_name, OpType::ReLU, layer);
+        } else {
+            globalLogger.error("Operation not supported");
+            graph_builder.addNode(graph, node_name, OpType::ReLU, layer);
+        }
+
+        globalLogger.debug("Model's input layer");
+        for (auto &i : layer) {
+            globalLogger.debug(i->name);
+        }
+    }
+
+    if (globalLogger.currentLevel == Logger::LogLevel::DEBUG) {
+        graph.printGraph();
+    }
+    CodeGen codegen("/Users/justinkwinecki/Documents/Programming/Term_25-26/"
+                    "comp/ai_compiler/out.c");
+
+    Optimizer opt(graph);
+    globalLogger.debug("Done Optimizations");
+    codegen.generateCode(graph);
+
+    // run_cpp(graph);
+    globalLogger.info("Finished build");
+    graph_builder.deleteGraph(graph);
+}
+
 void JSONParser::parse(const std::string path) {
     std::ifstream file(path);
     json data;
     file >> data;
-    build(data);
+    build_from_onnx(data);
 }

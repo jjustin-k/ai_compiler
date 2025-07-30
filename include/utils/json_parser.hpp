@@ -5,4 +5,5 @@ class JSONParser {
         
     public:
         void parse(const std::string path);
+        
 };

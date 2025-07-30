@@ -18,6 +18,7 @@ enum class OpType {
 
 struct Node{
     std::string name;
+    std::string output_name;
     OpType op_type;
     std::vector<Node*> output;
     std::vector<Node*> input;

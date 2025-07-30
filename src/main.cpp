@@ -5,10 +5,9 @@
 
 int main(int argc, char *argv[]) {
 
-    
     JSONParser parser;
-    parser.parse("/Users/justinkwinecki/Documents/Programming/Term_25-26/comp/"
-                 "ai_compiler/templates/complex_fusion.json");
-    
+    parser.parse(
+        "/Users/justinkwinecki/Documents/Programming/Term_25-26/comp/ai_compiler/models/mnist-12-int8.json");
+
     return 0;
 }
