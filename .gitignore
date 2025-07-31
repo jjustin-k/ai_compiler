@@ -1,3 +1,7 @@
 /build/
 /models/
 model.json
+/.vscode/
+/tests/
+out
+out.c
