@@ -38,6 +38,11 @@ void run_cpp(Graph &graph) {
     inference(graph, inputs);
 }
 
+int new_shape(std::vector<int> &kernel_shape, std::vector<int> &strides, std::vector<int> &pads,
+              std::vector<int> &dilation) {
+    return 0;
+}
+
 void build(json data) {
     globalLogger.info("Starting build...");
     Graph graph;
@@ -139,6 +144,7 @@ void build_from_onnx(json data) {
     GraphBuilder graph_builder;
     globalLogger.info("Creating computation graph from json data...");
     json nodes = data["nodes"];
+    std::vector<int> last_avail_shape;
     for (auto &node : nodes) {
 
         globalLogger.debug("Current node in json data: " + node["name"].dump());
@@ -157,55 +163,61 @@ void build_from_onnx(json data) {
                 input_type = OpType::Constant;
                 if (data["initializers"][raw_input]["values"].is_array()) {
                     globalLogger.debug("Mutiple values");
-                    globalLogger.debug(data["initializers"][raw_input]["values"].dump());
-                    globalLogger.debug(data["initializers"][raw_input]["dims"].dump());
+                    // globalLogger.debug(data["initializers"][raw_input]["values"].dump());
+                    // globalLogger.debug(data["initializers"][raw_input]["dims"].dump());
 
                     std::vector<float> flat_array;
 
                     flatten_array(data["initializers"][raw_input]["values"], flat_array);
 
                     tensor = new Tensor(flat_array, data["initializers"][raw_input]["dims"]);
-                } else {
-                    globalLogger.debug("Single or no value");
-                    globalLogger.debug(data["initializers"][raw_input]["dims"]);
-                    // globalLogger.debug(std::to_string(data["initializers"][raw_input]["data_type"].dump()));
-
-                    tensor = new Tensor({data["initializers"][raw_input]["values"]},
-                                        data["initializers"][raw_input]["dims"]);
                 }
 
             } else if (input == "Input3") {
                 tensor = new Tensor();
-                tensor->setShape(data["inputs"][0]["shape"]);
+                std::vector<int> t_shape;
+                for (auto &dim : data["inputs"][0]["shape"]) {
+                    t_shape.push_back(dim);
+                    std::cout << dim << std::endl;
+                }
+                tensor->setShape(t_shape);
+                std::cout << data["inputs"][0]["shape"] << std::endl;
             }
 
             if (!graph.nodeExists(input)) {
+                globalLogger.debug("Input: " + input);
                 graph_builder.addInputNode(graph, input, OpType::Constant, tensor);
             }
+            globalLogger.debug("Input: " + input);
 
             layer.push_back(graph.getNode(input));
             globalLogger.debug("Added node to layer");
         }
 
-        globalLogger.debug(node["outouts"]);
+        globalLogger.debug(node["outputs"]);
         std::string node_name = node["outputs"][0].get<std::string>();
         globalLogger.info("Finished inputs for :" + node_name);
 
-        if (node["op_type"] == "add") {
-            graph_builder.addNode(graph, node["name"], OpType::Add, layer);
-        } else if (node["op_type"] == "sub") {
-            graph_builder.addNode(graph, node["name"], OpType::Sub, layer);
-        } else if (node["op_type"] == "maxpool") {
-            std::vector<int> dims;
+        std::vector<int> node_shape = layer[0]->shape;
+        std::cout << "SIZE" << layer[0]->shape.size() << std::endl;
+
+        if (node["op_type"] == "Add") {
+            globalLogger.debug("Optype is Add");
+            std::cout << layer[0]->shape.size() << std::endl;
+
+            graph_builder.addNode(graph, node_name, OpType::Add, layer, node_shape);
+        } else if (node["op_type"] == "Sub") {
+            graph_builder.addNode(graph, node_name, OpType::Sub, layer);
+        } else if (node["op_type"] == "MaxPool" || node["op_type"] == "Conv") {
+            if (node["attributes"]["auto_pad"] != "SAME_UPPER") {
+            }
             // Assuming 2d mat mul, getting the dims. temp fix is /2
             /*
             Change this to actually calculate new dimensions of the maxpool
             result using stride and kernel size
             */
 
-            dims.push_back(layer[0]->shape[0] / 2);
-            dims.push_back(layer[0]->shape[1] / 2);
-            graph_builder.addNode(graph, node_name, OpType::MaxPool, layer, dims);
+            graph_builder.addNode(graph, node_name, OpType::MaxPool, layer, node_shape, node["attributes"]);
         } else if (node["op_type"] == "matmul") {
             std::vector<int> dims;
             // Assuming 2d mat mul, getting the dims.
@@ -214,13 +226,15 @@ void build_from_onnx(json data) {
             dims.push_back(layer[0]->shape[1]);
             dims.push_back(layer[1]->shape[1]);
             graph_builder.addNode(graph, node_name, OpType::MatMul, layer, dims);
-        } else if (node["op_typ"] == "relu") {
-            graph_builder.addNode(graph, node_name, OpType::ReLU, layer);
+        } else if (node["op_typ"] == "Relu") {
+
+            graph_builder.addNode(graph, node_name, OpType::ReLU, layer, node_shape);
         } else {
             globalLogger.error("Operation not supported");
-            graph_builder.addNode(graph, node_name, OpType::ReLU, layer);
-        }
 
+            graph_builder.addNode(graph, node_name, OpType::ReLU, layer, node_shape);
+        }
+        last_avail_shape = node_shape;
         globalLogger.debug("Model's input layer");
         for (auto &i : layer) {
             globalLogger.debug(i->name);
@@ -228,12 +242,12 @@ void build_from_onnx(json data) {
     }
 
     if (globalLogger.currentLevel == Logger::LogLevel::DEBUG) {
-        graph.printGraph();
+        // graph.printGraph();
     }
     CodeGen codegen("/Users/justinkwinecki/Documents/Programming/Term_25-26/"
                     "comp/ai_compiler/out.c");
 
-    Optimizer opt(graph);
+    // Optimizer opt(graph);
     globalLogger.debug("Done Optimizations");
     codegen.generateCode(graph);
 

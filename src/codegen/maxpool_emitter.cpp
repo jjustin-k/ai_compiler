@@ -1,4 +1,5 @@
 #include "../include/codegen/maxpool_emitter.hpp"
+#include "../include/utils/logger.hpp"
 
 void MaxPoolEmitter::emitFunctionDefinition(std::vector<int> &sizes) {
     std::string body = "\nint ix = ox * stride + kx;\nint iy = "
@@ -24,13 +25,17 @@ void MaxPoolEmitter::emitFunctionDefinition(std::vector<int> &sizes) {
 
 void MaxPoolEmitter::emitInvocation(std::ostream &out, Node *node,
                                     std::unordered_set<std::string> &defined_vars, int general_size) {
+
     if (!defined_vars.count(node->name)) {
         // this is why I need to add shape to node
+
         out << "\nfloat " << node->name << "[" << std::to_string(general_size) << "];\n";
         defined_vars.insert(node->name);
     }
+    std::cout << node->input[0]->shape.size() << std::endl;
     out << "\n maxpool2d(" << node->name << ", " << node->input[0]->name << ", " << node->input[0]->shape[0]
         << ", " << node->input[0]->shape[1] << ", 2, 2);\n";
+    globalLogger.info("Maxpool emitted");
 }
 
 std::string MaxPoolEmitter::getOpName() const { return "maxpool"; }

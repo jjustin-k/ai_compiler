@@ -28,9 +28,16 @@ void Tensor::calcAndSetStrides() {
 
 void Tensor::setShape(std::vector<int> shape) {
     this->shape = shape;
-    if (!this->data.empty() && !this->shape.empty()) {
+
+    if (!this->shape.empty()) {
+
         valid_tensor = true;
         calcAndSetStrides();
+        int full_size = 1;
+        for (auto &dim : shape) {
+            full_size *= dim;
+        }
+        size = full_size;
     }
 }
 

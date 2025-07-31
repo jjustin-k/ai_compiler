@@ -14,6 +14,32 @@
 #include <string>
 #include <unordered_set>
 
+std::string opTypeToString(OpType op) {
+    switch (op) {
+    case OpType::Add:
+        return "Add";
+    case OpType::Sub:
+        return "Sub";
+    case OpType::Conv2D:
+        return "Conv2D";
+    case OpType::ReLU:
+        return "ReLU";
+    case OpType::MatMul:
+        return "MatMul";
+    case OpType::MaxPool:
+        return "MaxPool";
+    case OpType::Constant:
+        return "Constant";
+    case OpType::Input:
+        return "Input";
+    case OpType::AddReLU:
+        return "AddReLU";
+    case OpType::FullyConnected:
+        return "FullyConnected";
+    default:
+        return "UnknownOp";
+    }
+}
 CodeGen::CodeGen(std::string output_path) {
     this->output_path = output_path;
     writeToFile("#include<stdio.h>\n\n", false);
@@ -43,9 +69,9 @@ void CodeGen::generateConstants(Graph &graph) {
     globalLogger.info("Generating constants");
     for (auto &input : graph.getInputNodes()) {
 
-        globalLogger.debug("Input node : " + input->name);
         if (input->name == "Input3") {
-            general_size = 64;
+            globalLogger.debug(input->tensor->size);
+            general_size = input->tensor->size;
 
             continue;
         }
@@ -100,12 +126,14 @@ std::string CodeGen::generateOperations(Graph &graph) {
         if (node->op_type == OpType::Constant || node->op_type == OpType::Input) {
             continue;
         }
+
         int s = 1;
         for (auto &a : node->shape) {
             s *= a;
         }
         /* Change this hardcoded value*/
-        sizes.push_back(16);
+
+        sizes.push_back(s);
 
         OpEmitter *emitter = emitters[node->op_type];
 
@@ -114,6 +142,8 @@ std::string CodeGen::generateOperations(Graph &graph) {
             set.insert(emitter->getOpName());
         }
 
+        std::cout << node->name << std::endl;
+        std::cout << opTypeToString(node->op_type) << std::endl;
         emitter->emitInvocation(function_call_stream, node, defined_vars, sizes[0]);
     }
 

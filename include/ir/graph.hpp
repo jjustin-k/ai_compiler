@@ -2,6 +2,7 @@
 #include<vector>
 #include<unordered_map>
 #include "tensor.hpp"
+#include <nlohmann/json.hpp>
 
 enum class OpType {
     Add,
@@ -24,6 +25,7 @@ struct Node{
     std::vector<Node*> input;
     std::vector<int> shape;
     Tensor* tensor;
+    nlohmann::json attributes; 
 };
 
 

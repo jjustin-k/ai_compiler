@@ -49,3 +49,11 @@ Node *GraphBuilder::addInputNode(Graph &graph, std::string name, OpType op_type,
     graph.addNode(new_node);
     return new_node;
 }
+
+Node *GraphBuilder::addNode(Graph &graph, std::string name, OpType op_type, std::vector<Node *> &inputs,
+                            std::vector<int> &shape, nlohmann::json attributes) {
+    Node *new_node = addNode(graph, name, op_type, inputs);
+    new_node->shape = shape;
+    new_node->attributes = attributes;
+    return new_node;
+}
