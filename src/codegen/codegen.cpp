@@ -1,11 +1,13 @@
 #include "../include/codegen/codegen.hpp"
 #include "../include/codegen/add_emitter.hpp"
 #include "../include/codegen/add_relu_emitter.hpp"
+#include "../include/codegen/conv_emitter.hpp"
 #include "../include/codegen/emitter.hpp"
 #include "../include/codegen/fully_connected_emitter.hpp"
 #include "../include/codegen/matmul_emitter.hpp"
 #include "../include/codegen/maxpool_emitter.hpp"
 #include "../include/codegen/relu_emitter.hpp"
+#include "../include/codegen/reshape_emitter.hpp"
 #include "../include/codegen/sub_emitter.hpp"
 #include "utils/logger.hpp"
 #include <fstream>
@@ -20,7 +22,7 @@ std::string opTypeToString(OpType op) {
         return "Add";
     case OpType::Sub:
         return "Sub";
-    case OpType::Conv2D:
+    case OpType::Conv:
         return "Conv2D";
     case OpType::ReLU:
         return "ReLU";
@@ -114,7 +116,9 @@ std::string CodeGen::generateOperations(Graph &graph) {
                                                         {OpType::MatMul, new MatMulEmitter()},
                                                         {OpType::Sub, new SubEmitter()},
                                                         {OpType::MaxPool, new MaxPoolEmitter()},
+                                                        {OpType::Conv, new ConvEmitter()},
                                                         {OpType::ReLU, new ReLUEmitter()},
+                                                        {OpType::Reshape, new ReshapeEmitter()},
                                                         {OpType::FullyConnected, new FullyConnectedEmitter()}
 
     };

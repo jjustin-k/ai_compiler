@@ -7,8 +7,9 @@
 enum class OpType {
     Add,
     Sub,
-    Conv2D,
+    Conv,
     ReLU,
+    Reshape,
     MatMul,
     MaxPool,
     Constant,

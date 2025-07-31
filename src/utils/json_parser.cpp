@@ -38,9 +38,40 @@ void run_cpp(Graph &graph) {
     inference(graph, inputs);
 }
 
-int new_shape(std::vector<int> &kernel_shape, std::vector<int> &strides, std::vector<int> &pads,
-              std::vector<int> &dilation) {
-    return 0;
+std::vector<int> new_shape(json attributes, std::vector<int> input_shape) {
+    int oh = 0;
+    int ow = 0;
+    int h = input_shape[input_shape.size() - 2];
+    int w = input_shape[input_shape.size() - 1];
+
+    if (attributes.contains("kernel_shape") && attributes.contains("strides") &&
+        attributes.contains("pads")) {
+        std::vector<int> k = attributes["kernel_shape"];
+        std::vector<int> s = attributes["strides"];
+        std::vector<int> p = attributes["pads"];
+
+        if (p.size() != 4)
+            throw std::runtime_error("pads must contain 4 values");
+
+        oh = ((h - k[0] + p[0] + p[2]) / s[0]) + 1;
+        ow = ((w - k[1] + p[1] + p[3]) / s[1]) + 1;
+
+    } else {
+        std::cout << "Key 'name' does not exist." << std::endl;
+    }
+    input_shape[input_shape.size() - 2] = oh;
+    input_shape[input_shape.size() - 1] = ow;
+
+    return input_shape;
+}
+
+std::vector<int> shape_post_conv(json attributes, std::vector<int> input_shape,
+                                 std::vector<int> weight_shape) {
+    // only supporting stride one currently
+
+    input_shape[1] = weight_shape[0];
+
+    return input_shape;
 }
 
 void build(json data) {
@@ -167,10 +198,12 @@ void build_from_onnx(json data) {
                     // globalLogger.debug(data["initializers"][raw_input]["dims"].dump());
 
                     std::vector<float> flat_array;
-
                     flatten_array(data["initializers"][raw_input]["values"], flat_array);
-
-                    tensor = new Tensor(flat_array, data["initializers"][raw_input]["dims"]);
+                    if (input.find("shape") != std::string::npos) {
+                        tensor = new Tensor(flat_array, data["initializers"][raw_input]["values"]);
+                    } else {
+                        tensor = new Tensor(flat_array, data["initializers"][raw_input]["dims"]);
+                    }
                 }
 
             } else if (input == "Input3") {
@@ -181,7 +214,6 @@ void build_from_onnx(json data) {
                     std::cout << dim << std::endl;
                 }
                 tensor->setShape(t_shape);
-                std::cout << data["inputs"][0]["shape"] << std::endl;
             }
 
             if (!graph.nodeExists(input)) {
@@ -199,36 +231,56 @@ void build_from_onnx(json data) {
         globalLogger.info("Finished inputs for :" + node_name);
 
         std::vector<int> node_shape = layer[0]->shape;
-        std::cout << "SIZE" << layer[0]->shape.size() << std::endl;
 
         if (node["op_type"] == "Add") {
             globalLogger.debug("Optype is Add");
-            std::cout << layer[0]->shape.size() << std::endl;
 
             graph_builder.addNode(graph, node_name, OpType::Add, layer, node_shape);
         } else if (node["op_type"] == "Sub") {
             graph_builder.addNode(graph, node_name, OpType::Sub, layer);
-        } else if (node["op_type"] == "MaxPool" || node["op_type"] == "Conv") {
+        } else if (node["op_type"] == "MaxPool") {
             if (node["attributes"]["auto_pad"] != "SAME_UPPER") {
+                node_shape = new_shape(node["attributes"], node_shape);
+            } else {
+                node_shape = shape_post_conv(node["attributes"], node_shape,
+                                             data["initializers"][layer[1]->name]["dims"]);
             }
-            // Assuming 2d mat mul, getting the dims. temp fix is /2
-            /*
-            Change this to actually calculate new dimensions of the maxpool
-            result using stride and kernel size
-            */
 
             graph_builder.addNode(graph, node_name, OpType::MaxPool, layer, node_shape, node["attributes"]);
-        } else if (node["op_type"] == "matmul") {
-            std::vector<int> dims;
-            // Assuming 2d mat mul, getting the dims.
+        } else if (node["op_type"] == "Conv") {
+            if (node["attributes"]["auto_pad"] != "SAME_UPPER") {
+                // For conv, only change last two , h,w
+                node_shape = new_shape(node["attributes"], node_shape);
+            } else {
+                node_shape = shape_post_conv(node["attributes"], node_shape,
+                                             data["initializers"][layer[1]->name]["dims"]);
+            }
 
-            dims.push_back(layer[0]->shape[0]);
-            dims.push_back(layer[0]->shape[1]);
-            dims.push_back(layer[1]->shape[1]);
-            graph_builder.addNode(graph, node_name, OpType::MatMul, layer, dims);
-        } else if (node["op_typ"] == "Relu") {
+            graph_builder.addNode(graph, node_name, OpType::Conv, layer, node_shape, node["attributes"]);
+        } else if (node["op_type"] == "MatMul") {
+            std::vector<int> matmul_shape;
+            if (layer[0]->shape.size() > 2) {
+                for (int i = 0; i < layer[0]->shape.size() - 2; i++) {
+                    matmul_shape.push_back(layer[0]->shape[i]);
+                    // assumption leading elements in layer[0] and layer[1] are the same
+                }
+            }
+            matmul_shape.push_back(layer[0]->shape[layer[0]->shape.size() - 2]);
+            matmul_shape.push_back(layer[1]->shape[layer[1]->shape.size() - 1]);
+            node_shape = matmul_shape;
+
+            // Assuming 2d mat mul, getting the dims.
+            graph_builder.addNode(graph, node_name, OpType::MatMul, layer, node_shape);
+        } else if (node["op_type"] == "Relu") {
 
             graph_builder.addNode(graph, node_name, OpType::ReLU, layer, node_shape);
+        } else if (node["op_type"] == "Reshape") {
+            globalLogger.debug("Optype is Reshape");
+
+            node_shape = layer[1]->shape;
+
+            std::cout << layer[1]->shape[1] << std::endl;
+            graph_builder.addNode(graph, node_name, OpType::Reshape, layer, node_shape);
         } else {
             globalLogger.error("Operation not supported");
 
