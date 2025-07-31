@@ -6,7 +6,7 @@ void FullyConnectedEmitter::emitFunctionDefinition(std::vector<int> &sizes) {
         writeForLoop("int j = 0", "j < p", "j++",
                      "float sum = 0.0f;\n" + n_loop + "\nout[i * p + j] = sum + c[i*p + j];\n");
     std::string body = writeForLoop("int i = 0", "i < m", "i++", inner_loop);
-    write_function("void", "fully_connected", "float* out, float* a, float* b, float* c, int m, int n, int p",
+    write_function("void", "fully_connected", "float* out, float* a, float* b, float* c, int m, int p, int n",
                    body);
 }
 
@@ -20,12 +20,10 @@ void FullyConnectedEmitter::emitInvocation(std::ostream &out, Node *node,
         defined_vars.insert(node->name);
     }
 
-    out << "int " << node->name << "_m = " << node->shape[0] << ";\nint " << node->name
-        << "_n = " << node->shape[1] << ";\nint " << node->name << "_p = " << node->shape[2] << ";\n";
-
+    int shape_size = node->shape.size();
     out << "\n fully_connected(" << node->name << ", " << node->input[0]->name << ", " << node->input[1]->name
-        << ", " << node->input[2]->name << ", " << node->name << "_m, " << node->name << "_n, " << node->name
-        << "_p);\n";
+        << ", " << node->input[2]->name << ", " << node->shape[shape_size - 2] << ", "
+        << node->input[1]->shape[0] << ", " << node->input[1]->shape[1] << ");\n";
 }
 
 std::string FullyConnectedEmitter::getOpName() const { return "fully_connected"; }

@@ -18,9 +18,7 @@ void MatMulEmitter::emitInvocation(std::ostream &out, Node *node,
         out << "\nfloat " << node->name << "[" << std::to_string(general_size) << "];\n";
         defined_vars.insert(node->name);
     }
-    for (auto &n : node->input[1]->shape) {
-        std::cout << n << " ";
-    }
+
     int shape_size = node->shape.size();
     out << "\n matmul2d(" << node->name << ", " << node->input[0]->name << ", " << node->input[1]->name
         << ", " << node->shape[shape_size - 2] << ", " << node->input[1]->shape[0] << ", "

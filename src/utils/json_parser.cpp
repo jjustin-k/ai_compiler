@@ -299,7 +299,7 @@ void build_from_onnx(json data) {
     CodeGen codegen("/Users/justinkwinecki/Documents/Programming/Term_25-26/"
                     "comp/ai_compiler/out.c");
 
-    // Optimizer opt(graph);
+    Optimizer opt(graph);
     globalLogger.debug("Done Optimizations");
     codegen.generateCode(graph);
 
