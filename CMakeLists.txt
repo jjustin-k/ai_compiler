@@ -11,6 +11,7 @@ add_executable(dlc
     src/ir/graph.cpp
     src/ir/graph_builder.cpp
     src/optimizer/optimizer.cpp
+    src/optimizer/quantize.cpp
     src/codegen/codegen.cpp
     src/codegen/emitter.cpp
     src/codegen/matmul_emitter.cpp

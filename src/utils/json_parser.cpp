@@ -2,7 +2,6 @@
 #include "../include/codegen/codegen.hpp"
 #include "../include/ir/graph.hpp"
 #include "../include/ir/graph_builder.hpp"
-
 #include "../include/optimizer/optimizer.hpp"
 #include "../include/utils/algorithms.hpp"
 #include "utils/logger.hpp"
@@ -293,13 +292,10 @@ void build_from_onnx(json data) {
         }
     }
 
-    if (globalLogger.currentLevel == Logger::LogLevel::DEBUG) {
-        // graph.printGraph();
-    }
     CodeGen codegen("/Users/justinkwinecki/Documents/Programming/Term_25-26/"
                     "comp/ai_compiler/out.c");
 
-    Optimizer opt(graph);
+    // Optimizer opt(graph);
     globalLogger.debug("Done Optimizations");
     codegen.generateCode(graph);
 

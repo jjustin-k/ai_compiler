@@ -39,3 +39,6 @@ void OpEmitter::write_function(std::string return_type, std::string name, std::s
     std::string function = function_stream.str();
     writeToFile(function, true);
 }
+
+std::string type = "float";
+void set_type(std::string n_type) { type = n_type; }

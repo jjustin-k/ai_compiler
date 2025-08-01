@@ -3,6 +3,7 @@
 
 class ConvEmitter : public OpEmitter {
     public:
+        
         void emitFunctionDefinition(std::vector<int> &sizes) override;
     
         void emitInvocation(std::ostream &out, Node *node,
@@ -10,4 +11,4 @@ class ConvEmitter : public OpEmitter {
     
         std::string getOpName() const override ;
 };
-    
+

@@ -1,4 +1,5 @@
 #include "../include/optimizer/optimizer.hpp"
+#include "../include/optimizer/quantize.hpp"
 #include "../include/utils/logger.hpp"
 
 #include <iostream>
@@ -7,9 +8,18 @@ Optimizer::Optimizer(Graph &graph) {
     globalLogger.info("Starting model optimizations");
     this->graph = graph;
     int index = 0;
+    Quantizer quantizer;
+
     std::vector<Node *> nodes = graph.getNodes();
+    for (auto &n : graph.getInputNodes()) {
+        if (n->op_type == OpType::Constant && n->name.find("shape") == std::string::npos) {
+            // quantizer.quantize(n, false);
+            // buggy currently
+        }
+    }
     for (auto &n : nodes) {
         globalLogger.debug("Node: " + n->name);
+
         if (n->op_type != OpType::Input && n->op_type != OpType::Constant) {
 
             if (n->op_type == OpType::Add) {
@@ -36,7 +46,7 @@ Optimizer::Optimizer(Graph &graph) {
 
                     graph.setNodes(nodes);
 
-                    globalLogger.info("Node " + n->name + " optimized");
+                    globalLogger.info("Node " + n->name + " optimized " + next_node->name);
                     graph.optimized_nodes.push_back(next_node);
                     graph.optimized_nodes.push_back(n);
                     // delete n;

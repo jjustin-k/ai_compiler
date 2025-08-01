@@ -3,6 +3,8 @@
 #include"./ir/graph.hpp"
 #include <unordered_set>
 
+extern std::string type;
+
 class OpEmitter {
         
     public:
@@ -17,3 +19,5 @@ class OpEmitter {
         virtual std::string getOpName() const = 0;
         virtual ~OpEmitter() = default;
     };
+
+void set_type(std::string n_type);

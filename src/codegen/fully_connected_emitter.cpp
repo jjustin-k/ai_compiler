@@ -4,9 +4,10 @@ void FullyConnectedEmitter::emitFunctionDefinition(std::vector<int> &sizes) {
     std::string n_loop = writeForLoop("int k = 0", "k < n", "k++", "sum += a[i * n + k] * b[k * p + j];");
     std::string inner_loop =
         writeForLoop("int j = 0", "j < p", "j++",
-                     "float sum = 0.0f;\n" + n_loop + "\nout[i * p + j] = sum + c[i*p + j];\n");
+                     type + " sum = 0;\n" + n_loop + "\nout[i * p + j] = sum + c[i*p + j];\n");
     std::string body = writeForLoop("int i = 0", "i < m", "i++", inner_loop);
-    write_function("void", "fully_connected", "float* out, float* a, float* b, float* c, int m, int p, int n",
+    write_function("void", "fully_connected",
+                   type + "* out, " + type + "* a, " + type + "* b, " + type + "* c, int m, int p, int n",
                    body);
 }
 
@@ -16,7 +17,7 @@ void FullyConnectedEmitter::emitInvocation(std::ostream &out, Node *node,
         general_size = node->shape[0] * node->shape[1];
 
         // this is why I need to add shape to node
-        out << "\nfloat " << node->name << "[" << std::to_string(general_size) << "];\n";
+        out << "\n " << type << " " << node->name << "[" << std::to_string(general_size) << "];\n";
         defined_vars.insert(node->name);
     }
 

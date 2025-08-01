@@ -44,7 +44,7 @@ std::string opTypeToString(OpType op) {
 }
 CodeGen::CodeGen(std::string output_path) {
     this->output_path = output_path;
-    writeToFile("#include<stdio.h>\n\n", false);
+    writeToFile("#include<stdio.h>\n#include<stdint.h>\n\n", false);
 }
 
 void CodeGen::writeToFile(std::string data, bool append) {
@@ -76,28 +76,46 @@ void CodeGen::generateConstants(Graph &graph) {
             general_size = input->tensor->size;
 
             continue;
+        } else if (input->name.find("shape") != std::string::npos) {
+            continue;
         }
 
         Tensor *tensor = input->tensor;
+
         int size = 1;
         for (auto &dim : input->shape) {
             size *= dim;
         }
-
         std::ostringstream constant_stream;
-        constant_stream << "\nint " << input->name << "_size = " << size << ";\n";
-        constant_stream << "float " << input->name << "[] = {\n    ";
 
-        for (int i = 0; i < size; i++) {
+        if (!input->quant_data.empty()) {
+            constant_stream << "int8_t " << input->name << "[] = {\n    ";
 
-            if (i != 0) {
-                constant_stream << " ," << tensor->getDataA()[i];
-            } else {
-                constant_stream << tensor->getDataA()[i];
+            for (int i = 0; i < size; i++) {
+                int c = static_cast<int>(input->quant_data[i]);
+
+                if (i != 0) {
+                    constant_stream << " ," << c;
+                } else {
+                    constant_stream << c;
+                }
             }
-        }
 
-        constant_stream << "};\n";
+            constant_stream << "};\n\n";
+        } else {
+            constant_stream << "float " << input->name << "[] = {\n    ";
+
+            for (int i = 0; i < size; i++) {
+
+                if (i != 0) {
+                    constant_stream << " ," << tensor->getDataA()[i];
+                } else {
+                    constant_stream << tensor->getDataA()[i];
+                }
+            }
+
+            constant_stream << "};\n\n";
+        }
 
         writeToFile(constant_stream.str(), true);
     }
@@ -166,24 +184,11 @@ void CodeGen::generateMain(Graph &graph, std::string body) {
     writeToFile(main_stream.str(), true);
 }
 
-void CodeGen::writeTestInput(Graph &graph) {
-
-    std::string input = "\nint x_size = 64;\nfloat x[] = {"
-                        "1, 2, 3, 4, 5, 6, 7, 8,"
-                        "9, 10, 11, 12, 13, 14, 15, 16,"
-                        "17, 18, 19, 20, 21, 22, 23, 24,"
-                        "25, 26, 27, 28, 29, 30, 31, 32,"
-                        "33, 34, 35, 36, 37, 38, 39, 40,"
-                        "41, 42, 43, 44, 45, 46, 47, 48,"
-                        "49, 50, 51, 52, 53, 54, 55, 56,"
-                        "57, 58, 59, 60, 61, 62, 63, 64"
-                        "};\n";
-
-    writeToFile(input, true);
-}
+void CodeGen::writeTestInput(Graph &graph) { return; }
 
 void CodeGen::generateCode(Graph &graph) {
     // call a function for initial setup
+    set_type("float");
     writeTestInput(graph);
     generateConstants(graph);
     generateMain(graph, generateOperations(graph));

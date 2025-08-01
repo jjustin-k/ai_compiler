@@ -5,8 +5,9 @@ void MaxPoolEmitter::emitFunctionDefinition(std::vector<int> &sizes) {
     std::string body = "\nint ix = ox * stride_w + kx - pad_left;\nint iy = "
                        "oy * stride_h + ky - pad_top;\n"
                        "if (iy >= 0 && iy < height && ix >= 0 && ix < width) {\n"
-                       "int in_idx = ((n * C + c) * height + iy) * width + ix;\n"
-                       "float val = a[in_idx];\n"
+                       "int in_idx = ((n * C + c) * height + iy) * width + ix;\n" +
+                       type +
+                       " val = a[in_idx];\n"
                        "if (val > max_val) {\n"
                        "max_val = val;\n"
                        "};"
@@ -14,20 +15,22 @@ void MaxPoolEmitter::emitFunctionDefinition(std::vector<int> &sizes) {
     std::string kx_loop = writeForLoop("int kx = 0", "kx < kernel_w", "kx++", body);
     std::string ky_loop = writeForLoop("int ky = 0", "ky < kernel_h", "ky++", kx_loop);
     std::string ox_loop = writeForLoop("int ox = 0", "ox < out_w", "ox++",
-                                       "\nfloat max_val = -1e9;\n" + ky_loop +
+                                       type + "\n max_val = -180;\n" + ky_loop +
                                            "\nout[((n * C + c) * out_h + oy) * out_w + ox] = max_val;\n");
     std::string oy_loop = writeForLoop("int oy = 0", "oy < out_h", "oy++", ox_loop);
     std::string c_loop = writeForLoop("int c = 0", "c < C", "c++", oy_loop);
     std::string n_loop = writeForLoop("int n = 0", "n < N", "n++", c_loop);
 
     // Just took out out_w, out_h
-    write_function("void", "maxpool",
-                   " float *out, float *a, int N, int C, int width, int height, int "
-                   "kernel_w, int kernel_h, int pad_top, int pad_left, int pad_bottom, int pad_right, int "
-                   "stride_w, int stride_h",
-                   "\nint out_w = (width - kernel_w + pad_right + pad_left) / stride_w + 1;"
-                   "\nint out_h = (height - kernel_h + pad_top + pad_bottom) / stride_h + 1;\n" +
-                       n_loop);
+    write_function(
+        "void", "maxpool",
+        type + " *out, " + type +
+            " *a, int N, int C, int width, int height, int "
+            "kernel_w, int kernel_h, int pad_top, int pad_left, int pad_bottom, int pad_right, int "
+            "stride_w, int stride_h",
+        "\nint out_w = (width - kernel_w + pad_right + pad_left) / stride_w + 1;"
+        "\nint out_h = (height - kernel_h + pad_top + pad_bottom) / stride_h + 1;\n" +
+            n_loop);
 }
 
 void MaxPoolEmitter::emitInvocation(std::ostream &out, Node *node,
@@ -36,7 +39,7 @@ void MaxPoolEmitter::emitInvocation(std::ostream &out, Node *node,
     if (!defined_vars.count(node->name)) {
         // this is why I need to add shape to node
 
-        out << "\nfloat " << node->name << "[" << std::to_string(general_size) << "];\n";
+        out << "\n " << type << " " << node->name << "[" << std::to_string(general_size) << "];\n";
         defined_vars.insert(node->name);
     }
     std::cout << node->input[0]->shape.size() << std::endl;

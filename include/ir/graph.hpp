@@ -4,6 +4,9 @@
 #include "tensor.hpp"
 #include <nlohmann/json.hpp>
 
+#define NCHW_INDEX(n, c, h, w, C, H, W) (((n) * (C) * (H) * (W)) + ((c) * (H) * (W)) + ((h) * (W)) + (w))
+
+
 enum class OpType {
     Add,
     Sub,
@@ -26,6 +29,7 @@ struct Node{
     std::vector<Node*> input;
     std::vector<int> shape;
     Tensor* tensor;
+    std::vector<int8_t> quant_data;
     nlohmann::json attributes; 
 };
 
