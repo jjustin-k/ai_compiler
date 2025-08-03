@@ -67,8 +67,16 @@ std::vector<int> new_shape(json attributes, std::vector<int> input_shape) {
 std::vector<int> shape_post_conv(json attributes, std::vector<int> input_shape,
                                  std::vector<int> weight_shape) {
     // only supporting stride one currently
-
+    std::vector<int> s = attributes["strides"];
+    std::vector<int> k = attributes["kernel_shape"];
     input_shape[1] = weight_shape[0];
+    /*
+     if (attributes["auto_pad"] == "SAME_UPPER") {
+
+        input_shape[2] = (input_shape[2] - k[0]) / s[0] + 1;
+        input_shape[3] = (input_shape[3] - k[1]) / s[1] + 1;
+    }
+    */
 
     return input_shape;
 }
@@ -162,7 +170,7 @@ void flatten_array(const json &j, std::vector<float> &out) {
     } else if (j.is_number_integer() || j.is_number_float()) {
         out.push_back(j.get<float>());
     } else {
-        std::cout << j << std::endl;
+
         throw std::runtime_error("Expected integer value in tensor data");
     }
 }
@@ -210,7 +218,6 @@ void build_from_onnx(json data) {
                 std::vector<int> t_shape;
                 for (auto &dim : data["inputs"][0]["shape"]) {
                     t_shape.push_back(dim);
-                    std::cout << dim << std::endl;
                 }
                 tensor->setShape(t_shape);
             }
@@ -229,9 +236,20 @@ void build_from_onnx(json data) {
         std::string node_name = node["outputs"][0].get<std::string>();
         globalLogger.info("Finished inputs for :" + node_name);
 
+        if (node["op_type"] == "Constant") {
+            std::vector<int> c_shape;
+
+            for (auto &a : node["attributes"]["dims"]) {
+                c_shape.push_back(a);
+            }
+            graph_builder.addNode(graph, node_name, OpType::Constant, layer, c_shape);
+            continue;
+        }
+
         std::vector<int> node_shape = layer[0]->shape;
 
         if (node["op_type"] == "Add") {
+            std::vector<int> node_shape = layer[0]->shape;
             globalLogger.debug("Optype is Add");
 
             graph_builder.addNode(graph, node_name, OpType::Add, layer, node_shape);
@@ -254,7 +272,10 @@ void build_from_onnx(json data) {
                 node_shape = shape_post_conv(node["attributes"], node_shape,
                                              data["initializers"][layer[1]->name]["dims"]);
             }
-
+            globalLogger.debug("Node shape for conv");
+            for (auto &a : node_shape) {
+                globalLogger.debug(a);
+            }
             graph_builder.addNode(graph, node_name, OpType::Conv, layer, node_shape, node["attributes"]);
         } else if (node["op_type"] == "MatMul") {
             std::vector<int> matmul_shape;
@@ -278,7 +299,6 @@ void build_from_onnx(json data) {
 
             node_shape = layer[1]->shape;
 
-            std::cout << layer[1]->shape[1] << std::endl;
             graph_builder.addNode(graph, node_name, OpType::Reshape, layer, node_shape);
         } else {
             globalLogger.error("Operation not supported");

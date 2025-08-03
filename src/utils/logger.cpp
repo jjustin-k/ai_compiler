@@ -5,4 +5,4 @@ Logger::Logger(LogLevel level) : currentLevel(level) {}
 void Logger::setLevel(LogLevel level) { currentLevel = level; }
 
 // Define global instance
-Logger globalLogger(Logger::LogLevel::INFO);
+Logger globalLogger(Logger::LogLevel::DEBUG);

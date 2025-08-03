@@ -152,6 +152,12 @@ std::string CodeGen::generateOperations(Graph &graph) {
         int s = 1;
         for (auto &a : node->shape) {
             s *= a;
+            if (node->op_type == OpType::Conv) {
+                std::cout << "CONV " << a << std::endl;
+            }
+        }
+        if (node->op_type == OpType::Conv) {
+            std::cout << "CONV " << s << std::endl;
         }
         /* Change this hardcoded value*/
 

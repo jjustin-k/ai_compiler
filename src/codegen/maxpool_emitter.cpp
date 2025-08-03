@@ -70,9 +70,9 @@ void MaxPoolEmitter::emitInvocation(std::ostream &out, Node *node,
     }
 
     out << "\n maxpool(" << node->name << ", " << node->input[0]->name << ", " << node->input[0]->shape[0]
-        << ", " << node->input[0]->shape[1] << ", " << node->input[0]->shape[2] << ", "
-        << node->input[0]->shape[3] << ", " << pt << ", " << pl << ", " << pb << ", " << pr << ", " << kw
-        << ", " << kh << "," << sw << ", " << sh << ");\n";
+        << ", " << node->input[0]->shape[1] << ", " << node->input[0]->shape[2] << ","
+        << node->input[0]->shape[3] << ", " << kw << ", " << kh << ", " << pt << ", " << pl << ", " << pb
+        << ", " << pr << "," << sw << ", " << sh << ");\n";
     globalLogger.info("Maxpool emitted");
 }
 
