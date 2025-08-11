@@ -2,12 +2,15 @@
 #include <ostream>
 #include"./ir/graph.hpp"
 #include <unordered_set>
+#include "./utils/broadcaster.hpp"
 
 extern std::string type;
 
 class OpEmitter {
         
     public:
+        int broad = 0;
+
         std::string output_path = "/Users/justinkwinecki/Documents/Programming/Term_25-26/"
                     "comp/ai_compiler/out.c";
         std::string writeForLoop(std::string start, std::string end, std::string change, std::string statement);

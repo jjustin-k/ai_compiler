@@ -9,6 +9,7 @@
 #include "../include/codegen/relu_emitter.hpp"
 #include "../include/codegen/reshape_emitter.hpp"
 #include "../include/codegen/sub_emitter.hpp"
+#include "../include/utils/broadcaster.hpp"
 #include "utils/logger.hpp"
 #include <fstream>
 #include <iostream>
@@ -143,12 +144,13 @@ std::string CodeGen::generateOperations(Graph &graph) {
     globalLogger.info("Generating Operations");
 
     for (auto &node : graph.getNodes()) {
+
         std::vector<int> sizes;
 
         if (node->op_type == OpType::Constant || node->op_type == OpType::Input) {
             continue;
         }
-
+        std::cout << "NODE" << std::endl;
         int s = 1;
         for (auto &a : node->shape) {
             s *= a;
@@ -156,23 +158,29 @@ std::string CodeGen::generateOperations(Graph &graph) {
                 std::cout << "CONV " << a << std::endl;
             }
         }
-        if (node->op_type == OpType::Conv) {
-            std::cout << "CONV " << s << std::endl;
-        }
-        /* Change this hardcoded value*/
 
-        sizes.push_back(s);
+        /* Change this hardcoded value*/
+        if (node->op_type == OpType::Add) {
+            sizes.push_back(broadcast_val(node->input[0]->shape, node->input[1]->shape));
+        } else {
+            sizes.push_back(0);
+        }
 
         OpEmitter *emitter = emitters[node->op_type];
 
-        if (!set.count(emitter->getOpName())) {
+        if (node->op_type == OpType::Add) {
+            if (!set.count(emitter->getOpName() + "_" + std::to_string(sizes[0]))) {
+                emitter->emitFunctionDefinition(sizes);
+                set.insert(emitter->getOpName() + "_" + std::to_string(sizes[0]));
+            }
+        } else if (!set.count(emitter->getOpName())) {
             emitter->emitFunctionDefinition(sizes);
             set.insert(emitter->getOpName());
         }
 
         std::cout << node->name << std::endl;
         std::cout << opTypeToString(node->op_type) << std::endl;
-        emitter->emitInvocation(function_call_stream, node, defined_vars, sizes[0]);
+        emitter->emitInvocation(function_call_stream, node, defined_vars, s);
     }
 
     for (auto &a : emitters) {
@@ -185,8 +193,12 @@ std::string CodeGen::generateOperations(Graph &graph) {
 void CodeGen::generateMain(Graph &graph, std::string body) {
 
     std::ostringstream main_stream;
-    main_stream << "\nint main(){\n" << body << "\nreturn 0;\n};\n";
-
+    main_stream << "\nint main(){\n"
+                << body << "printf(\" Final Output :\\n\");" << "  for (int i = 0; i < 10; i++) {\n"
+                << "printf(\"%f %d  \", Plus214_Output_0[i], i);\n"
+                << "  }\n"
+                << " printf(\"\\n\");" << "\nreturn 0;\n"
+                << "};";
     writeToFile(main_stream.str(), true);
 }
 

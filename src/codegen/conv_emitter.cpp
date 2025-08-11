@@ -112,10 +112,11 @@ void ConvEmitter::emitInvocation(std::ostream &out, Node *node, std::unordered_s
     }
 
     out << "\n conv(" << node->name << ", " << node->input[0]->name << ", " << node->input[1]->name << ", "
-        << node->input[1]->shape[1] << ", " << node->input[0]->shape[0] << ", " << node->input[0]->shape[1]
+        << node->input[1]->shape[0] << ", " << node->input[0]->shape[0] << ", " << node->input[0]->shape[1]
         << ", " << node->input[0]->shape[2] << ", " << node->input[0]->shape[3] << ", " << kw << ", " << kh
         << "," << pt << ", " << pl << ", " << pb << ", " << pr << ", " << sw << ", " << sh << ");\n";
-    globalLogger.info("Maxpool emitted");
+    std::cout << node->input[1]->shape[0] << ", " << node->input[1]->shape[1] << ", "
+              << node->input[1]->shape[2] << ", " << node->input[1]->shape[3] << std::endl;
 }
 
 std::string ConvEmitter::getOpName() const { return "conv"; }

@@ -21,8 +21,8 @@ void MatMulEmitter::emitInvocation(std::ostream &out, Node *node,
 
     int shape_size = node->shape.size();
     out << "\n matmul2d(" << node->name << ", " << node->input[0]->name << ", " << node->input[1]->name
-        << ", " << node->shape[shape_size - 2] << ", " << node->input[1]->shape[0] << ", "
-        << node->input[1]->shape[1] << ");\n";
+        << ", " << node->shape[shape_size - 2] << ", " << node->input[1]->shape[1] << ", "
+        << node->input[1]->shape[0] << ");\n";
 }
 
 std::string MatMulEmitter::getOpName() const { return "matmul"; }

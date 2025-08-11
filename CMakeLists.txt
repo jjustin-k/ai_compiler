@@ -25,6 +25,7 @@ add_executable(dlc
     src/codegen/reshape_emitter.cpp
     src/utils/algorithms.cpp
     src/utils/json_parser.cpp
+    src/utils/broadcaster.cpp
     src/utils/logger.cpp
 
 )
