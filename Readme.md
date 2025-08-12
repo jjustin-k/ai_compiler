@@ -24,27 +24,19 @@ LiteAI is a minimal AI compiler that takes a neural network described in JSON, b
 - End-to-end pipeline for small models
 
 ## Current Benchmarks
-**Optimized Analytics Summary (MNIST-12)**
-Accuracy: 98.9
-Average time: 368.85140 mircoseconds
-Total Time: 368.8514 milliseconds
-Count: 10000
-Mean Error: -0.01890
-Mean Absolute Error (MAE): 0.04510
-Mean Squared Error (MSE): 0.23850
-Root Mean Squared Error (RMSE): 0.48836
-Time standard deviation: 30.15194 units
+- **Optimized Analytics Summary (MNIST-12)**
+- Accuracy: 98.9
+- Average time: 368.85140 mircoseconds
+- Total Time: 368.8514 milliseconds
+- Count: 10000
+- Time standard deviation: 30.15194 units
 
-**Un-Optimized Analytic Summary (MNIST-12)**
-Accuracy: 98.9
-Average time: 377.06990 microseconds
-Total Time: 3770.699 milliseconds
-Count: 10000
-Mean Error: -0.01890
-Mean Absolute Error (MAE): 0.04510
-Mean Squared Error (MSE): 0.23850
-Root Mean Squared Error (RMSE): 0.48836
-Time standard deviation: 138.07530 units
+- **Un-Optimized Analytic Summary (MNIST-12)**
+- Accuracy: 98.9
+- Average time: 377.06990 microseconds
+- Total Time: 3770.699 milliseconds
+- Count: 10000
+- Time standard deviation: 138.07530 units
 
 ## Compiler Pipeline
 
