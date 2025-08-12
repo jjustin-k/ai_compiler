@@ -56,7 +56,7 @@ std::vector<int> new_shape(json attributes, std::vector<int> input_shape) {
         ow = ((w - k[1] + p[1] + p[3]) / s[1]) + 1;
 
     } else {
-        std::cout << "Key 'name' does not exist." << std::endl;
+        globalLogger.error("Key 'name' does not exist.");
     }
     input_shape[input_shape.size() - 2] = oh;
     input_shape[input_shape.size() - 1] = ow;
@@ -79,87 +79,6 @@ std::vector<int> shape_post_conv(json attributes, std::vector<int> input_shape,
     */
 
     return input_shape;
-}
-
-void build(json data) {
-    globalLogger.info("Starting build...");
-    Graph graph;
-    GraphBuilder graph_builder;
-    globalLogger.info("Creating computation graph from json data...");
-    for (auto &node : data["nodes"]) {
-
-        globalLogger.debug("Current node in json data: " + node["name"].dump());
-        std::vector<Node *> layer;
-
-        globalLogger.debug("Current node's number of inputs: " + std::to_string(node["inputs"].size()));
-        for (auto &input : node["inputs"]) {
-
-            Tensor *tensor = nullptr;
-            OpType input_type = OpType::Input;
-            if (data["weights"].contains(input)) {
-                input_type = OpType::Constant;
-                tensor = new Tensor(data["weights"][input]["values"], data["weights"][input]["shape"]);
-            } else if (input == "x") {
-                tensor = new Tensor();
-                tensor->setShape(data["inputs"][input]["shape"]);
-            }
-
-            if (!graph.nodeExists(input)) {
-                graph_builder.addInputNode(graph, input, OpType::Constant, tensor);
-            }
-
-            layer.push_back(graph.getNode(input));
-        }
-
-        if (node["op"] == "add") {
-            graph_builder.addNode(graph, node["name"], OpType::Add, layer);
-        } else if (node["op"] == "sub") {
-            graph_builder.addNode(graph, node["name"], OpType::Sub, layer);
-        } else if (node["op"] == "maxpool2d") {
-            std::vector<int> dims;
-            // Assuming 2d mat mul, getting the dims. temp fix is /2
-            /*
-            Change this to actually calculate new dimensions of the maxpool
-            result using stride and kernel size
-            */
-
-            dims.push_back(layer[0]->shape[0] / 2);
-            dims.push_back(layer[0]->shape[1] / 2);
-            graph_builder.addNode(graph, node["name"], OpType::MaxPool, layer, dims);
-        } else if (node["op"] == "matmul") {
-            std::vector<int> dims;
-            // Assuming 2d mat mul, getting the dims.
-
-            dims.push_back(layer[0]->shape[0]);
-            dims.push_back(layer[0]->shape[1]);
-            dims.push_back(layer[1]->shape[1]);
-            graph_builder.addNode(graph, node["name"], OpType::MatMul, layer, dims);
-        } else if (node["op"] == "relu") {
-            graph_builder.addNode(graph, node["name"], OpType::ReLU, layer);
-        }
-
-        globalLogger.debug("Model's input layer");
-        for (auto &i : layer) {
-            globalLogger.debug(i->name);
-        }
-    }
-
-    if (globalLogger.currentLevel == Logger::LogLevel::DEBUG) {
-        graph.printGraph();
-    }
-    CodeGen codegen("/Users/justinkwinecki/Documents/Programming/Term_25-26/"
-                    "comp/ai_compiler/out.c");
-
-    Optimizer opt(graph);
-    codegen.generateCode(graph);
-
-    if (globalLogger.currentLevel == Logger::LogLevel::DEBUG) {
-        graph.printGraph();
-    }
-
-    run_cpp(graph);
-    globalLogger.info("Finished build");
-    graph_builder.deleteGraph(graph);
 }
 
 void flatten_array(const json &j, std::vector<float> &out) {
@@ -312,10 +231,9 @@ void build_from_onnx(json data) {
         }
     }
 
-    CodeGen codegen("/Users/justinkwinecki/Documents/Programming/Term_25-26/"
-                    "comp/ai_compiler/out.c");
+    CodeGen codegen("../output/compiled_model.c");
 
-    // Optimizer opt(graph);
+    Optimizer opt(graph);
     globalLogger.debug("Done Optimizations");
     codegen.generateCode(graph);
 

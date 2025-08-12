@@ -1,5 +1,6 @@
 #include "../include/optimizer/optimizer.hpp"
 #include "../include/optimizer/quantize.hpp"
+#include "../include/utils/broadcaster.hpp"
 #include "../include/utils/logger.hpp"
 
 #include <iostream>
@@ -11,12 +12,14 @@ Optimizer::Optimizer(Graph &graph) {
     Quantizer quantizer;
 
     std::vector<Node *> nodes = graph.getNodes();
-    for (auto &n : graph.getInputNodes()) {
+    /*for (auto &n : graph.getInputNodes()) {
         if (n->op_type == OpType::Constant && n->name.find("shape") == std::string::npos) {
-            // quantizer.quantize(n, false);
+            //quantizer.quantize(n, false);
             // buggy currently
         }
     }
+    */
+
     for (auto &n : nodes) {
         globalLogger.debug("Node: " + n->name);
 
@@ -62,6 +65,7 @@ Optimizer::Optimizer(Graph &graph) {
                 Node *next_node = n->output[0];
                 if (next_node->op_type == OpType::Add) {
                     // fuse();
+
                     Node *fused = new Node;
                     std::vector<Node *> inputs;
                     for (auto &i : n->input) {

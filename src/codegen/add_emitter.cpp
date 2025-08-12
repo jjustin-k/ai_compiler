@@ -1,7 +1,7 @@
 #include "../include/codegen/add_emitter.hpp"
 #include <iostream>
 void AddEmitter::emitFunctionDefinition(std::vector<int> &sizes) {
-    std::cout << sizes.size() << std::endl;
+
     int broad = sizes[0];
     std::string w_loop = "";
     std::string h_loop = "";
@@ -49,7 +49,6 @@ void AddEmitter::emitInvocation(std::ostream &out, Node *node, std::unordered_se
         r++;
     }
 
-    std::cout << "BROADCAST " << broadcast_val(node->input[0]->shape, node->input[1]->shape) << std::endl;
     out << "\n add_" << broad << "(" << node->name << ", " << node->input[1]->name << ", " << dims[0] << ", "
         << dims[1] << ", " << dims[2] << ", " << dims[3] << ");\n";
 }

@@ -3,6 +3,4 @@
 model.json
 /.vscode/
 /tests/
-out
-out.c
-temp
+bench_mark.sh

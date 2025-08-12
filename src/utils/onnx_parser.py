@@ -78,4 +78,4 @@ def save_onnx_to_json(onnx_path, json_path):
         json.dump(model_json, f, indent=2)
 
 # Example usage:
-save_onnx_to_json("models/mnist-1.onnx", "models/mnist-1.json")
+save_onnx_to_json("models/mnist-8.onnx", "models/mnist-8.json")

@@ -11,8 +11,7 @@ class OpEmitter {
     public:
         int broad = 0;
 
-        std::string output_path = "/Users/justinkwinecki/Documents/Programming/Term_25-26/"
-                    "comp/ai_compiler/out.c";
+        std::string output_path = "../output/compiled_model.c";
         std::string writeForLoop(std::string start, std::string end, std::string change, std::string statement);
         void write_function(std::string return_type, std::string name, std::string parameters, std::string body);
         void writeToFile(std::string data, bool append);

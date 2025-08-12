@@ -150,17 +150,14 @@ std::string CodeGen::generateOperations(Graph &graph) {
         if (node->op_type == OpType::Constant || node->op_type == OpType::Input) {
             continue;
         }
-        std::cout << "NODE" << std::endl;
+
         int s = 1;
         for (auto &a : node->shape) {
             s *= a;
-            if (node->op_type == OpType::Conv) {
-                std::cout << "CONV " << a << std::endl;
-            }
         }
 
         /* Change this hardcoded value*/
-        if (node->op_type == OpType::Add) {
+        if (node->op_type == OpType::Add || node->op_type == OpType::AddReLU) {
             sizes.push_back(broadcast_val(node->input[0]->shape, node->input[1]->shape));
         } else {
             sizes.push_back(0);
@@ -168,7 +165,7 @@ std::string CodeGen::generateOperations(Graph &graph) {
 
         OpEmitter *emitter = emitters[node->op_type];
 
-        if (node->op_type == OpType::Add) {
+        if (node->op_type == OpType::Add || node->op_type == OpType::AddReLU) {
             if (!set.count(emitter->getOpName() + "_" + std::to_string(sizes[0]))) {
                 emitter->emitFunctionDefinition(sizes);
                 set.insert(emitter->getOpName() + "_" + std::to_string(sizes[0]));
@@ -178,8 +175,6 @@ std::string CodeGen::generateOperations(Graph &graph) {
             set.insert(emitter->getOpName());
         }
 
-        std::cout << node->name << std::endl;
-        std::cout << opTypeToString(node->op_type) << std::endl;
         emitter->emitInvocation(function_call_stream, node, defined_vars, s);
     }
 
@@ -193,11 +188,11 @@ std::string CodeGen::generateOperations(Graph &graph) {
 void CodeGen::generateMain(Graph &graph, std::string body) {
 
     std::ostringstream main_stream;
-    main_stream << "\nint main(){\n"
-                << body << "printf(\" Final Output :\\n\");" << "  for (int i = 0; i < 10; i++) {\n"
-                << "printf(\"%f %d  \", Plus214_Output_0[i], i);\n"
+    main_stream << "\nint predict(float* Input3){\n"
+                << body << "\nint max = 0;\nfloat max_val = 0.0f;" << "  for (int i = 0; i < 10; i++) {\n"
+                << "if(max_val < Plus214_Output_0[i]){\nmax_val = Plus214_Output_0[i];\n max = i;\n}\n"
                 << "  }\n"
-                << " printf(\"\\n\");" << "\nreturn 0;\n"
+                << "\nreturn max;\n"
                 << "};";
     writeToFile(main_stream.str(), true);
 }

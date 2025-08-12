@@ -42,7 +42,6 @@ void MaxPoolEmitter::emitInvocation(std::ostream &out, Node *node,
         out << "\n " << type << " " << node->name << "[" << std::to_string(general_size) << "];\n";
         defined_vars.insert(node->name);
     }
-    std::cout << node->input[0]->shape.size() << std::endl;
 
     int pt = 0;
     int pl = 0;

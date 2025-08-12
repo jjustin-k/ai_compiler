@@ -64,7 +64,6 @@ std::tuple<int, int, int, int> same_upper_padding(int input_h, int input_w, int 
     int pad_left = pad_w_total / 2;
     int pad_right = pad_w_total - pad_left;
 
-    std::cout << pad_top << " " << pad_bottom << " " << pad_left << " " << pad_right << " " << std::endl;
     return {pad_top, pad_left, pad_bottom, pad_right};
 }
 
@@ -76,7 +75,6 @@ void ConvEmitter::emitInvocation(std::ostream &out, Node *node, std::unordered_s
         out << "\n" << type << " " << node->name << "[" << std::to_string(general_size) << "];\n";
         defined_vars.insert(node->name);
     }
-    std::cout << node->input[0]->shape.size() << std::endl;
 
     int pt = 0;
     int pl = 0;
@@ -115,8 +113,6 @@ void ConvEmitter::emitInvocation(std::ostream &out, Node *node, std::unordered_s
         << node->input[1]->shape[0] << ", " << node->input[0]->shape[0] << ", " << node->input[0]->shape[1]
         << ", " << node->input[0]->shape[2] << ", " << node->input[0]->shape[3] << ", " << kw << ", " << kh
         << "," << pt << ", " << pl << ", " << pb << ", " << pr << ", " << sw << ", " << sh << ");\n";
-    std::cout << node->input[1]->shape[0] << ", " << node->input[1]->shape[1] << ", "
-              << node->input[1]->shape[2] << ", " << node->input[1]->shape[3] << std::endl;
 }
 
 std::string ConvEmitter::getOpName() const { return "conv"; }

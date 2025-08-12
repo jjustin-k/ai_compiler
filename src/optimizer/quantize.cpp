@@ -11,8 +11,7 @@ void Quantizer::quantize(Node *node, bool per_channel) {
         // only supporting conv for now, must be 4d?
 
         std::vector<int> shape = node->input[1]->shape;
-        std::cout << node->input[1]->shape.size() << std::endl;
-        std::cout << node->name << std::endl;
+
         std::vector<float> data = node->input[1]->tensor->getDataV();
         std::vector<int8_t> quant_data(data.size());
 
@@ -20,7 +19,7 @@ void Quantizer::quantize(Node *node, bool per_channel) {
         int in_channels = shape[1];
         int height = shape[2];
         int width = shape[3];
-        globalLogger.debug("Here");
+
         for (int oc = 0; oc < out_channels; oc++) {
             float min = 0.0;
             float max = 0.0;

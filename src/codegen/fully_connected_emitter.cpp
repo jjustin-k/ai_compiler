@@ -24,7 +24,7 @@ void FullyConnectedEmitter::emitInvocation(std::ostream &out, Node *node,
     int shape_size = node->shape.size();
     out << "\n fully_connected(" << node->name << ", " << node->input[0]->name << ", " << node->input[1]->name
         << ", " << node->input[2]->name << ", " << node->shape[shape_size - 2] << ", "
-        << node->input[1]->shape[0] << ", " << node->input[1]->shape[1] << ");\n";
+        << node->input[1]->shape[1] << ", " << node->input[1]->shape[0] << ");\n";
 }
 
 std::string FullyConnectedEmitter::getOpName() const { return "fully_connected"; }
