@@ -1,6 +1,6 @@
 # LiteAI Compiler
 
-LiteAI is a minimal AI compiler that takes a neural network described in JSON, builds a computation graph intermediate representation (IR), applies basic graph optimizations, lowers the graph to a loop-based IR, and generates C code for CPU inference.
+LiteAI is a minimalist AI compiler designed to convert simple neural network models described in JSON into optimized C code for CPU inference. It serves as a foundation to explore compiler design, graph optimizations, and code generation for ML workloads.
 
 ## What LiteAI Actually Does
 
