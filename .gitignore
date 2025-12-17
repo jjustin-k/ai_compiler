@@ -1,9 +1,0 @@
-/build/
-/models/
-model.json
-/.vscode/
-/tests/
-bench_mark.sh
-/output/input.txt
-/output/results.txt
-/output/opt_results.txt
